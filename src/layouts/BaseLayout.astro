@@ -1,0 +1,181 @@
+---
+import '@fontsource-variable/inter';
+import '@fontsource-variable/source-serif-4';
+import '@fontsource-variable/source-serif-4/wght-italic.css';
+import 'katex/dist/katex.min.css';
+import '../styles/global.css';
+import { url } from '../lib/url';
+
+interface Props {
+  titulo: string;
+  descripcion?: string;
+  /** Oculta la barra superior (la portada tiene su propia composición). */
+  sinBarra?: boolean;
+}
+
+const {
+  titulo,
+  descripcion = 'Libro interactivo de física universitaria: vectores, movimiento y más, con animaciones y ejercicios.',
+  sinBarra = false,
+} = Astro.props;
+const tituloCompleto = titulo === 'Física Universitaria Interactiva' ? titulo : `${titulo} · Física Universitaria Interactiva`;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{tituloCompleto}</title>
+    <meta name="description" content={descripcion} />
+    <link rel="icon" type="image/svg+xml" href={url('favicon.svg')} />
+    <meta name="theme-color" content="#fbfaf7" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#121113" media="(prefers-color-scheme: dark)" />
+    <script is:inline>
+      try {
+        const t = localStorage.getItem('fui:tema');
+        if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
+      } catch {}
+    </script>
+  </head>
+  <body>
+    {
+      !sinBarra && (
+        <header class="barra">
+          <a class="marca" href={url('/')}>
+            <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+              <path d="M4 18 L13 6" stroke="var(--azul)" stroke-width="2.2" stroke-linecap="round" />
+              <path d="M13 6 L20 14" stroke="var(--magenta)" stroke-width="2.2" stroke-linecap="round" />
+              <path d="M4 18 L20 14" stroke="var(--verde)" stroke-width="2.2" stroke-linecap="round" />
+            </svg>
+            <span>Física Universitaria <em>Interactiva</em></span>
+          </a>
+          <nav aria-label="Principal">
+            <a href={url('indice')}>Índice</a>
+            <a href={url('glosario')}>Glosario</a>
+            <a href={url('como-usar')} class="ocultar-movil">Cómo usar</a>
+            <button class="tema" type="button" aria-label="Cambiar tema claro/oscuro" title="Tema">
+              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                <circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.8" />
+                <path d="M12 4 A8 8 0 0 1 12 20 Z" fill="currentColor" />
+              </svg>
+            </button>
+          </nav>
+        </header>
+      )
+    }
+    <slot />
+    <footer class="pie ui">
+      <p>
+        <strong>Física Universitaria Interactiva</strong> — notas de estudio independientes que siguen el orden y la
+        pedagogía de <em>Física Universitaria</em> de Sears, Zemansky, Young y Freedman (12.ª ed.). No está afiliado ni
+        respaldado por Pearson. Textos, ejemplos y figuras son originales.
+      </p>
+      <p>
+        Contenido bajo <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es">CC BY-NC-SA 4.0</a> · Código
+        bajo licencia MIT.
+      </p>
+    </footer>
+    <script>
+      const boton = document.querySelector<HTMLButtonElement>('.tema');
+      boton?.addEventListener('click', () => {
+        const raiz = document.documentElement;
+        const oscuroAhora =
+          raiz.dataset.theme === 'dark' ||
+          (!raiz.dataset.theme && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        const nuevo = oscuroAhora ? 'light' : 'dark';
+        raiz.dataset.theme = nuevo;
+        try {
+          localStorage.setItem('fui:tema', nuevo);
+        } catch {}
+      });
+
+      // Aparición suave al hacer scroll
+      const observador = new IntersectionObserver(
+        (entradas) => {
+          for (const e of entradas) {
+            if (e.isIntersecting) {
+              e.target.classList.add('visible');
+              observador.unobserve(e.target);
+            }
+          }
+        },
+        { rootMargin: '0px 0px -8% 0px' },
+      );
+      document.querySelectorAll('.aparece').forEach((el) => observador.observe(el));
+    </script>
+  </body>
+</html>
+
+<style>
+  .barra {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.7rem clamp(1rem, 4vw, 2rem);
+    background: color-mix(in srgb, var(--fondo) 78%, transparent);
+    backdrop-filter: saturate(180%) blur(18px);
+    -webkit-backdrop-filter: saturate(180%) blur(18px);
+    border-bottom: 1px solid var(--linea);
+    font-family: var(--fuente-ui);
+  }
+  .marca {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    color: var(--tinta);
+    text-decoration: none;
+    font-weight: 620;
+    font-size: 0.95rem;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+  }
+  .marca em {
+    font-style: normal;
+    color: var(--tinta-3);
+    font-weight: 500;
+  }
+  nav {
+    display: flex;
+    align-items: center;
+    gap: clamp(0.6rem, 2.5vw, 1.4rem);
+  }
+  nav a {
+    color: var(--tinta-2);
+    text-decoration: none;
+    font-size: 0.88rem;
+  }
+  nav a:hover {
+    color: var(--tinta);
+  }
+  .tema {
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid var(--linea);
+    background: transparent;
+    color: var(--tinta-2);
+    cursor: pointer;
+  }
+  .pie {
+    max-width: var(--ancho-figura);
+    margin: 6rem auto 0;
+    padding: 2rem 1rem 3rem;
+    border-top: 1px solid var(--linea);
+    font-size: var(--t-xs);
+    line-height: 1.6;
+    color: var(--tinta-3);
+  }
+  @media (max-width: 560px) {
+    .ocultar-movil,
+    .marca em {
+      display: none;
+    }
+  }
+</style>

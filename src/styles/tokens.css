@@ -1,0 +1,157 @@
+/*
+ * Tokens de diseño. La paleta se extrajo de los colores de proceso del libro
+ * (Sears & Zemansky, 12.ª ed.). Ver docs/diseno.md para la convención de uso.
+ */
+:root {
+  /* — Paleta del libro — */
+  --azul: #0082c9;
+  --azul-claro: #0091c6;
+  --magenta: #cc33b2;
+  --magenta-vivo: #ed008c;
+  --verde: #2d9972;
+  --ocre: #af7c28;
+  --rojo: #ef4f28;
+  --naranja: #f7933d;
+  --arena: #d6b584;
+  --crema: #fffcd6;
+
+  /* — Convención de vectores — */
+  --vec-a: var(--azul);
+  --vec-b: var(--magenta);
+  --vec-r: var(--verde);
+  --vec-d: var(--naranja);
+  --vec-x: var(--azul);
+  --vec-y: var(--magenta);
+  --vec-z: var(--verde);
+
+  /* — Superficies y texto — */
+  --fondo: #fbfaf7;
+  --fondo-elevado: #ffffff;
+  --fondo-hundido: #f3f1ec;
+  --tinta: #231e21;
+  --tinta-2: #57524f;
+  --tinta-3: #8a8580;
+  --linea: rgba(35, 30, 33, 0.1);
+  --linea-fuerte: rgba(35, 30, 33, 0.22);
+  --rejilla: rgba(35, 30, 33, 0.06);
+
+  --caja-ejemplo: #fbf7ea;
+  --caja-ejemplo-borde: rgba(175, 124, 40, 0.28);
+  --caja-cuidado: #fff2ed;
+  --caja-cuidado-borde: rgba(239, 79, 40, 0.3);
+  --caja-evalua: #f2f8fc;
+  --caja-evalua-borde: rgba(0, 130, 201, 0.25);
+  --caja-estrategia: #fffcd6;
+
+  /* — Tipografía — */
+  --fuente-texto: 'Source Serif 4 Variable', 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
+  --fuente-ui: 'Inter Variable', -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', system-ui, sans-serif;
+  --fuente-mono: ui-monospace, 'SF Mono', 'Cascadia Code', Menlo, monospace;
+
+  --t-xs: 0.78rem;
+  --t-sm: 0.88rem;
+  --t-base: 1.125rem;
+  --t-lg: 1.3rem;
+  --t-xl: 1.75rem;
+  --t-2xl: 2.4rem;
+  --t-3xl: clamp(2.6rem, 6vw, 4.4rem);
+
+  /* — Espaciado, forma, sombra — */
+  --ancho-texto: 42rem;
+  --ancho-figura: 54rem;
+  --radio-s: 8px;
+  --radio: 14px;
+  --radio-l: 22px;
+  --sombra: 0 1px 2px rgba(35, 30, 33, 0.05), 0 8px 24px rgba(35, 30, 33, 0.06);
+  --sombra-l: 0 2px 6px rgba(35, 30, 33, 0.06), 0 24px 60px rgba(35, 30, 33, 0.1);
+
+  /* — Movimiento (curvas tipo Apple) — */
+  --ease: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --dur-1: 160ms;
+  --dur-2: 320ms;
+  --dur-3: 640ms;
+
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --azul: #3aa8e8;
+    --azul-claro: #4db6ef;
+    --magenta: #e05cc8;
+    --magenta-vivo: #ff3fa8;
+    --verde: #3fc192;
+    --ocre: #d6a24c;
+    --rojo: #ff6b47;
+    --naranja: #ffa95c;
+    --arena: #a88c5f;
+    --crema: #2a2718;
+
+    --fondo: #121113;
+    --fondo-elevado: #1b1a1d;
+    --fondo-hundido: #0c0b0d;
+    --tinta: #eeebe6;
+    --tinta-2: #b4afa9;
+    --tinta-3: #7f7a75;
+    --linea: rgba(238, 235, 230, 0.1);
+    --linea-fuerte: rgba(238, 235, 230, 0.24);
+    --rejilla: rgba(238, 235, 230, 0.06);
+
+    --caja-ejemplo: #1f1c15;
+    --caja-ejemplo-borde: rgba(214, 162, 76, 0.28);
+    --caja-cuidado: #24160f;
+    --caja-cuidado-borde: rgba(255, 107, 71, 0.32);
+    --caja-evalua: #111d26;
+    --caja-evalua-borde: rgba(58, 168, 232, 0.28);
+    --caja-estrategia: #22200f;
+
+    --sombra: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.3);
+    --sombra-l: 0 2px 6px rgba(0, 0, 0, 0.4), 0 24px 60px rgba(0, 0, 0, 0.45);
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme='dark'] {
+  --azul: #3aa8e8;
+  --azul-claro: #4db6ef;
+  --magenta: #e05cc8;
+  --magenta-vivo: #ff3fa8;
+  --verde: #3fc192;
+  --ocre: #d6a24c;
+  --rojo: #ff6b47;
+  --naranja: #ffa95c;
+  --arena: #a88c5f;
+  --crema: #2a2718;
+
+  --fondo: #121113;
+  --fondo-elevado: #1b1a1d;
+  --fondo-hundido: #0c0b0d;
+  --tinta: #eeebe6;
+  --tinta-2: #b4afa9;
+  --tinta-3: #7f7a75;
+  --linea: rgba(238, 235, 230, 0.1);
+  --linea-fuerte: rgba(238, 235, 230, 0.24);
+  --rejilla: rgba(238, 235, 230, 0.06);
+
+  --caja-ejemplo: #1f1c15;
+  --caja-ejemplo-borde: rgba(214, 162, 76, 0.28);
+  --caja-cuidado: #24160f;
+  --caja-cuidado-borde: rgba(255, 107, 71, 0.32);
+  --caja-evalua: #111d26;
+  --caja-evalua-borde: rgba(58, 168, 232, 0.28);
+  --caja-estrategia: #22200f;
+
+  --sombra: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.3);
+  --sombra-l: 0 2px 6px rgba(0, 0, 0, 0.4), 0 24px 60px rgba(0, 0, 0, 0.45);
+  color-scheme: dark;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-1: 0ms;
+    --dur-2: 0ms;
+    --dur-3: 0ms;
+  }
+}

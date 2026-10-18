@@ -1,0 +1,138 @@
+---
+capitulo: 1
+seccion: 9
+titulo: Vectores unitarios
+resumen: Un vector unitario mide exactamente 1 y sólo sirve para señalar una dirección. Con ellos, cualquier vector se escribe como una expresión algebraica y sumar vectores se parece mucho a sumar polinomios.
+paginaLibro: 20
+minutos: 20
+---
+import Termino from '../../../components/libro/Termino.astro';
+import Ecuacion from '../../../components/libro/Ecuacion.astro';
+import Figura from '../../../components/libro/Figura.astro';
+import Ejemplo from '../../../components/libro/Ejemplo.astro';
+import Cuidado from '../../../components/libro/Cuidado.astro';
+import Evalua from '../../../components/libro/Evalua.astro';
+import OpcionMultiple from '../../../components/evaluacion/OpcionMultiple.svelte';
+import CalculoMental from '../../../components/evaluacion/CalculoMental.svelte';
+import VectoresUnitarios from '../../../components/interactivos/c1/VectoresUnitarios.svelte';
+
+## Flechas que sólo señalan
+
+Un <Termino id="unitario">vector unitario</Termino> es un vector de magnitud **exactamente 1** y **sin unidades**. No representa un desplazamiento ni una fuerza: su único trabajo es *apuntar*. Para distinguirlo de los demás vectores le ponemos un acento circunflejo, un "sombrero": $\hat\imath$, $\hat\jmath$, $\hat k$.
+
+En un sistema de ejes $x$-$y$ definimos dos unitarios especiales:
+
+- $\hat\imath$ apunta en la dirección $+x$;
+- $\hat\jmath$ apunta en la dirección $+y$.
+
+Con ellos, los vectores componentes de la sección 1.8 se escriben de forma muy compacta: el vector componente $\vec A_x$ es "la componente $A_x$ multiplicada por la dirección $\hat\imath$".
+
+<Ecuacion tex="\vec A_x = A_x\,\hat\imath \qquad \vec A_y = A_y\,\hat\jmath" n="1.13" />
+
+y, por lo tanto, el vector completo es
+
+<Ecuacion tex="\vec A = A_x\,\hat\imath + A_y\,\hat\jmath" n="1.14" destacada />
+
+Fíjate en el papel de cada pieza: la componente (un número con signo y unidades) dice **cuánto**; el vector unitario dice **hacia dónde**. Si $A_x$ es negativa, $A_x\hat\imath$ apunta hacia $-x$, exactamente como esperamos.
+
+<Figura etiqueta="Interactivo 1.9a" pie="Elige las componentes y pulsa «Construir»: î se estira hasta Aₓ î, ĵ se estira hasta A_y ĵ en la punta del anterior, y su suma es A. Las flechas negras cortas son los unitarios: siempre miden 1.">
+  <VectoresUnitarios client:visible />
+</Figura>
+
+<Cuidado titulo="Cada término es un vector">
+
+En $\vec A = A_x\hat\imath + A_y\hat\jmath$, los sumandos $A_x\hat\imath$ y $A_y\hat\jmath$ son **vectores**, y el "+" es una suma vectorial. Pero $A_x$ y $A_y$ solos siguen siendo números. Es la combinación número × unitario la que produce un vector.
+
+</Cuidado>
+
+## Sumar con vectores unitarios
+
+Escribir los vectores así hace que la suma sea casi automática. Si $\vec A = A_x\hat\imath + A_y\hat\jmath$ y $\vec B = B_x\hat\imath + B_y\hat\jmath$, agrupamos "lo que va con $\hat\imath$" y "lo que va con $\hat\jmath$", como al sumar términos semejantes en álgebra:
+
+<Ecuacion tex="\begin{aligned} \vec R = \vec A + \vec B &= (A_x\hat\imath + A_y\hat\jmath) + (B_x\hat\imath + B_y\hat\jmath) \\ &= (A_x + B_x)\,\hat\imath + (A_y + B_y)\,\hat\jmath \\ &= R_x\,\hat\imath + R_y\,\hat\jmath \end{aligned}" n="1.15" />
+
+Es la misma información que las ecuaciones (1.10), pero condensada en **una sola ecuación vectorial**.
+
+## El tercer unitario
+
+En el espacio necesitamos un tercer vector unitario, $\hat k$, que apunta en la dirección $+z$. Cualquier vector se escribe entonces con tres términos:
+
+<Ecuacion tex="\vec A = A_x\hat\imath + A_y\hat\jmath + A_z\hat k \qquad \vec B = B_x\hat\imath + B_y\hat\jmath + B_z\hat k" n="1.16" />
+
+y la suma sigue el mismo patrón:
+
+<Ecuacion tex="\vec R = (A_x + B_x)\hat\imath + (A_y + B_y)\hat\jmath + (A_z + B_z)\hat k = R_x\hat\imath + R_y\hat\jmath + R_z\hat k" n="1.17" />
+
+<Ejemplo numero="1.9a" titulo="Combinar dos desplazamientos">
+  <Fragment slot="enunciado">
+
+  Dados $\vec D = (3\hat\imath - 2\hat\jmath + 4\hat k)\ \text{m}$ y $\vec E = (-\hat\imath + 5\hat\jmath + 2\hat k)\ \text{m}$, encuentra $\vec F = 2\vec D - \vec E$ y su magnitud.
+
+  </Fragment>
+  <Fragment slot="identificar">
+
+  Hay que multiplicar un vector por un escalar y luego restar otro vector. Con vectores unitarios, ambas operaciones se hacen componente por componente.
+
+  </Fragment>
+  <Fragment slot="plantear">
+
+  Por (1.9), $2\vec D$ tiene el doble de cada componente de $\vec D$. Restar $\vec E$ es restar sus componentes. Los unitarios $\hat\imath$, $\hat\jmath$, $\hat k$ no se tocan: sólo "etiquetan" cada componente.
+
+  </Fragment>
+  <Fragment slot="ejecutar">
+
+  $$
+  \begin{aligned} \vec F &= 2(3\hat\imath - 2\hat\jmath + 4\hat k)\ \text{m} - (-\hat\imath + 5\hat\jmath + 2\hat k)\ \text{m} \\ &= \big[(6 + 1)\hat\imath + (-4 - 5)\hat\jmath + (8 - 2)\hat k\big]\ \text{m} \\ &= (7\hat\imath - 9\hat\jmath + 6\hat k)\ \text{m} \end{aligned}
+  $$
+
+  Con la ecuación (1.12):
+
+  $$
+  F = \sqrt{(7\ \text{m})^2 + (-9\ \text{m})^2 + (6\ \text{m})^2} = \sqrt{166}\ \text{m} = 12.9\ \text{m}
+  $$
+
+  </Fragment>
+  <Fragment slot="evaluar">
+
+  Una comprobación rápida: $|F_y| = 9$ m es la mayor componente, y la magnitud (12.9 m) es mayor que ella pero menor que $7 + 9 + 6 = 22$ m. Los errores típicos aquí son de signos al restar: $-(-\hat\imath) = +\hat\imath$.
+
+  </Fragment>
+</Ejemplo>
+
+<CalculoMental
+  client:visible
+  id="1.9-mental"
+  retos={[
+    {
+      pregunta: '¿Cuánto mide el vector $0.6\\,\\hat\\imath + 0.8\\,\\hat\\jmath$?',
+      respuesta: 1,
+      pista: 'Eleva al cuadrado: 0.36 y 0.64.',
+      truco: '$0.36 + 0.64 = 1$: ¡es un vector unitario! Cualquier $\\cos\\theta\\,\\hat\\imath + \\sin\\theta\\,\\hat\\jmath$ lo es.',
+    },
+    {
+      pregunta: 'Si $\\vec A = 2\\hat\\imath + 5\\hat\\jmath$ y $\\vec B = 4\\hat\\imath - 5\\hat\\jmath$, ¿cuánto mide $\\vec A + \\vec B$?',
+      respuesta: 6,
+      truco: 'Las componentes $y$ se anulan: $\\vec A + \\vec B = 6\\hat\\imath$, que mide 6.',
+    },
+    {
+      pregunta: '¿Cuánto vale la componente $z$ de $3\\vec A$ si $\\vec A = \\hat\\imath - 2\\hat\\jmath - 4\\hat k$?',
+      respuesta: -12,
+      truco: 'Cada componente se multiplica por 3: $3 \\cdot (-4) = -12$.',
+    },
+  ]}
+/>
+
+<Evalua seccion="1.9">
+  <OpcionMultiple
+    client:visible
+    id="1.9-evalua"
+    pregunta="¿Cuál de estos vectores tiene la **mayor** magnitud? $\vec A = 3\hat\imath - 4\hat\jmath$, $\;\vec B = -5\hat\jmath$, $\;\vec C = 4\hat\imath + 4\hat\jmath$, $\;\vec D = -2\hat\imath + 4\hat\jmath$."
+    opciones={[
+      { texto: '$\\vec A$', explicacion: '$\\sqrt{9 + 16} = 5$. El signo de $-4$ no reduce la magnitud: se eleva al cuadrado.' },
+      { texto: '$\\vec B$', explicacion: '$\\sqrt{25} = 5$, igual que $\\vec A$. Que tenga una sola componente no lo hace más corto ni más largo.' },
+      { texto: '$\\vec C$', correcta: true, explicacion: 'Correcto: $\\sqrt{16 + 16} = \\sqrt{32} \\approx 5.66$.' },
+      { texto: '$\\vec D$', explicacion: '$\\sqrt{4 + 16} = \\sqrt{20} \\approx 4.47$: es el más corto.' },
+    ]}
+    cierre="La magnitud sólo depende de los **cuadrados** de las componentes, así que los signos (la dirección) nunca la cambian."
+  />
+</Evalua>

@@ -1,0 +1,17 @@
+# Dependencias y builds
+node_modules/
+dist/
+.astro/
+
+# El libro original tiene derechos de autor: nunca se sube
+*.pdf
+.referencia/
+
+# Entorno
+.env
+.env.*
+.DS_Store
+Thumbs.db
+*.log
+.vscode/*
+!.vscode/extensions.json

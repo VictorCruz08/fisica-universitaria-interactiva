@@ -1,0 +1,365 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { seccionesPublicadas } from '../data/indice';
+import { url } from '../lib/url';
+
+const publicadas = seccionesPublicadas();
+const primera = publicadas[0];
+
+// Campo de flechas de fondo: una rejilla de pequeños vectores que giran
+// suavemente, como un campo vectorial. Las posiciones son deterministas.
+const flechas = Array.from({ length: 13 * 7 }, (_, n) => {
+  const i = n % 13;
+  const j = Math.floor(n / 13);
+  const x = 40 + i * 76;
+  const y = 40 + j * 76;
+  const ang = Math.atan2(y - 300, x - 520) * (180 / Math.PI) + 90;
+  return { x, y, ang, retraso: (i + j) * 60 };
+});
+---
+
+<BaseLayout titulo="Física Universitaria Interactiva" sinBarra>
+  <header class="portada">
+    <svg class="campo" viewBox="0 0 1000 560" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      {
+        flechas.map((f) => (
+          <g transform={`translate(${f.x} ${f.y}) rotate(${f.ang})`}>
+            <g class="mini" style={`animation-delay:${f.retraso}ms`}>
+              <line x1="-11" y1="0" x2="8" y2="0" />
+              <path d="M12 0 L5 -3.6 L5 3.6 Z" />
+            </g>
+          </g>
+        ))
+      }
+    </svg>
+
+    <div class="contenido">
+      <p class="sobre ui">Volumen 1 · Mecánica, ondas y termodinámica</p>
+      <h1>
+        <span class="l1">Física</span>
+        <span class="l2">Universitaria</span>
+        <span class="l3">Interactiva</span>
+      </h1>
+
+      <svg class="suma" viewBox="0 0 360 150" role="img" aria-label="Dos vectores sumados cabeza con cola y su resultante">
+        <line class="v a" x1="20" y1="130" x2="200" y2="40" pathLength="1" />
+        <path class="p a" d="M210 35 L194.5 37 L201.4 50.4 Z" />
+        <line class="v b" x1="200" y1="40" x2="330" y2="96" pathLength="1" />
+        <path class="p b" d="M340 100 L327.5 88.7 L321.9 101.6 Z" />
+        <line class="v r" x1="20" y1="130" x2="330" y2="103" pathLength="1" />
+        <path class="p r" d="M341 102 L327.9 96.6 L329 110.6 Z" />
+        <text class="t a" x="96" y="72">A</text>
+        <text class="t b" x="276" y="56">B</text>
+        <text class="t r" x="170" y="140">A + B</text>
+      </svg>
+
+      <p class="lema">
+        Un libro de física para quienes entienden mejor <em>viendo</em>: cada concepto con animaciones precisas,
+        figuras que puedes mover y preguntas para comprobar lo aprendido.
+      </p>
+      <div class="acciones ui">
+        {
+          primera && (
+            <a class="boton-grande" href={url(primera.slug)}>
+              Comenzar: {primera.numero} {primera.titulo}
+            </a>
+          )
+        }
+        <a class="enlace" href={url('indice')}>Ver índice completo →</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="debajo">
+    <section class="principios">
+      <article class="aparece">
+        <h2 class="ui">Visual</h2>
+        <p>Cada idea importante tiene una animación que la muestra paso a paso. Nada de adorno: cada movimiento explica algo.</p>
+      </article>
+      <article class="aparece">
+        <h2 class="ui">Interactivo</h2>
+        <p>Arrastra vectores, mueve deslizadores, gira escenas en 3D. Aprendes preguntándole al modelo "¿y si…?".</p>
+      </article>
+      <article class="aparece">
+        <h2 class="ui">Riguroso</h2>
+        <p>Sigue el orden, el nivel y la notación de un curso universitario, con la estrategia Identificar · Plantear · Ejecutar · Evaluar.</p>
+      </article>
+    </section>
+
+    <section class="disponibles">
+      <h2 class="ui">Disponible ahora</h2>
+      <ol>
+        {
+          publicadas.map((s) => (
+            <li class="aparece">
+              <a href={url(s.slug)}>
+                <span class="n">{s.numero}</span>
+                <span class="tt">{s.titulo}</span>
+                <span class="cap ui">Cap. {s.capitulo}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+      <p class="nota ui">El libro crece sección por sección. <a href={url('como-usar')}>Cómo usar este libro</a>.</p>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .portada {
+    position: relative;
+    min-height: min(100vh, 920px);
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    padding: 4rem 16px;
+    border-bottom: 1px solid var(--linea);
+    background: radial-gradient(120% 80% at 50% 0%, var(--fondo-elevado) 0%, var(--fondo) 70%);
+  }
+  .campo {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.55;
+    -webkit-mask-image: radial-gradient(ellipse at center, transparent 22%, #000 75%);
+    mask-image: radial-gradient(ellipse at center, transparent 22%, #000 75%);
+  }
+  .mini {
+    color: var(--tinta-3);
+    opacity: 0.45;
+    animation: oscila 7s var(--ease) infinite alternate;
+    transform-origin: 0 0;
+  }
+  .mini line {
+    stroke: currentColor;
+    stroke-width: 1.4;
+    stroke-linecap: round;
+  }
+  .mini path {
+    fill: currentColor;
+  }
+  @keyframes oscila {
+    from {
+      transform: rotate(-18deg);
+    }
+    to {
+      transform: rotate(18deg);
+    }
+  }
+  .contenido {
+    position: relative;
+    max-width: 46rem;
+    text-align: center;
+  }
+  .sobre {
+    margin: 0 0 1.4rem;
+    font-size: var(--t-sm);
+    color: var(--tinta-3);
+    letter-spacing: 0.02em;
+  }
+  h1 {
+    margin: 0;
+    font-size: clamp(3rem, 10vw, 6.6rem);
+    line-height: 0.95;
+    letter-spacing: -0.05em;
+    font-weight: 700;
+  }
+  h1 span {
+    display: block;
+  }
+  .l3 {
+    font-family: var(--fuente-texto);
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: -0.03em;
+    color: var(--azul);
+    padding-bottom: 0.08em;
+  }
+  .suma {
+    width: min(360px, 80vw);
+    margin: 2.2rem auto 0.4rem;
+    display: block;
+    overflow: visible;
+  }
+  .v {
+    stroke-width: 4;
+    stroke-linecap: round;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: traza 1s var(--ease-out) forwards;
+  }
+  .v.a {
+    stroke: var(--azul);
+    animation-delay: 300ms;
+  }
+  .v.b {
+    stroke: var(--magenta);
+    animation-delay: 1100ms;
+  }
+  .v.r {
+    stroke: var(--verde);
+    animation-delay: 2000ms;
+  }
+  .p,
+  .t {
+    opacity: 0;
+    animation: aparece 500ms var(--ease-out) forwards;
+  }
+  .p.a {
+    fill: var(--azul);
+    animation-delay: 1150ms;
+  }
+  .p.b {
+    fill: var(--magenta);
+    animation-delay: 1950ms;
+  }
+  .p.r {
+    fill: var(--verde);
+    animation-delay: 2850ms;
+  }
+  .t {
+    font-family: var(--fuente-texto);
+    font-style: italic;
+    font-size: 20px;
+  }
+  .t.a {
+    fill: var(--azul);
+    animation-delay: 800ms;
+  }
+  .t.b {
+    fill: var(--magenta);
+    animation-delay: 1600ms;
+  }
+  .t.r {
+    fill: var(--verde);
+    animation-delay: 2700ms;
+  }
+  @keyframes traza {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+  @keyframes aparece {
+    to {
+      opacity: 1;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .v {
+      animation: none;
+      stroke-dashoffset: 0;
+    }
+    .p,
+    .t {
+      animation: none;
+      opacity: 1;
+    }
+    .mini {
+      animation: none;
+    }
+  }
+  .lema {
+    margin: 1.2rem auto 0;
+    max-width: 34rem;
+    font-size: 1.25rem;
+    line-height: 1.6;
+    color: var(--tinta-2);
+  }
+  .acciones {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem 1.6rem;
+    margin-top: 2.2rem;
+  }
+  .boton-grande {
+    padding: 0.85rem 1.5rem;
+    border-radius: 999px;
+    background: var(--tinta);
+    color: var(--fondo);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.98rem;
+    transition:
+      transform var(--dur-2) var(--ease-out),
+      box-shadow var(--dur-2) var(--ease-out);
+  }
+  .boton-grande:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--sombra-l);
+  }
+  .enlace {
+    color: var(--azul);
+    text-decoration: none;
+    font-weight: 550;
+  }
+  .debajo {
+    max-width: var(--ancho-figura);
+    margin: 0 auto;
+    padding: 5rem 16px 0;
+  }
+  .principios {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+    gap: 2.5rem;
+  }
+  .principios h2 {
+    margin: 0 0 0.5rem;
+    font-size: var(--t-lg);
+  }
+  .principios p {
+    margin: 0;
+    color: var(--tinta-2);
+  }
+  .disponibles {
+    margin-top: 5rem;
+  }
+  .disponibles h2 {
+    font-size: var(--t-xl);
+    margin: 0 0 1.2rem;
+  }
+  .disponibles ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--linea);
+  }
+  .disponibles a {
+    display: grid;
+    grid-template-columns: 4rem 1fr auto;
+    align-items: baseline;
+    gap: 1rem;
+    padding: 1.1rem 0.4rem;
+    border-bottom: 1px solid var(--linea);
+    color: var(--tinta);
+    text-decoration: none;
+    transition:
+      background var(--dur-1) var(--ease),
+      padding var(--dur-2) var(--ease-out);
+  }
+  .disponibles a:hover {
+    background: var(--fondo-elevado);
+    padding-left: 0.9rem;
+  }
+  .n {
+    font-family: var(--fuente-ui);
+    font-weight: 700;
+    color: var(--ocre);
+    font-variant-numeric: tabular-nums;
+  }
+  .tt {
+    font-size: 1.2rem;
+  }
+  .cap {
+    font-size: var(--t-xs);
+    color: var(--tinta-3);
+  }
+  .nota {
+    margin-top: 1.2rem;
+    font-size: var(--t-sm);
+    color: var(--tinta-3);
+  }
+</style>

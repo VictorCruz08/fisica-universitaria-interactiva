@@ -1,0 +1,49 @@
+---
+interface Props {
+  /** Etiqueta corta, p. ej. "Interactivo 1.7a". */
+  etiqueta: string;
+  pie?: string;
+  /** Más ancha que la columna de texto (por defecto) o igual. */
+  ancha?: boolean;
+}
+const { etiqueta, pie, ancha = true } = Astro.props;
+---
+
+<figure class:list={['figura', 'aparece', { ancha }]}>
+  <div class="lienzo"><slot /></div>
+  <figcaption class="ui">
+    <span class="etq">{etiqueta}</span>
+    {pie && <span>{pie}</span>}
+  </figcaption>
+</figure>
+
+<style>
+  .figura {
+    margin: 2.6rem 0;
+  }
+  .figura.ancha {
+    margin-left: calc(50% - min(50vw - 16px, var(--ancho-figura) / 2));
+    margin-right: calc(50% - min(50vw - 16px, var(--ancho-figura) / 2));
+  }
+  .lienzo {
+    border-radius: var(--radio-l);
+    background: var(--fondo-elevado);
+    border: 1px solid var(--linea);
+    box-shadow: var(--sombra);
+    overflow: hidden;
+  }
+  figcaption {
+    display: flex;
+    gap: 0.6rem;
+    margin-top: 0.75rem;
+    padding: 0 0.3rem;
+    font-size: var(--t-sm);
+    line-height: 1.5;
+    color: var(--tinta-2);
+  }
+  .etq {
+    flex-shrink: 0;
+    font-weight: 650;
+    color: var(--azul);
+  }
+</style>

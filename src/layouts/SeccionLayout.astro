@@ -1,0 +1,340 @@
+---
+import type { MarkdownHeading } from 'astro';
+import BaseLayout from './BaseLayout.astro';
+import type { SeccionPublicada } from '../data/indice';
+import { url } from '../lib/url';
+
+interface Props {
+  capitulo: number;
+  tituloCapitulo: string;
+  numero: string;
+  titulo: string;
+  resumen: string;
+  paginaLibro: number;
+  minutos: number;
+  encabezados: MarkdownHeading[];
+  anterior?: SeccionPublicada;
+  siguiente?: SeccionPublicada;
+}
+
+const { capitulo, tituloCapitulo, numero, titulo, resumen, paginaLibro, minutos, encabezados, anterior, siguiente } =
+  Astro.props;
+const toc = encabezados.filter((h) => h.depth === 2);
+---
+
+<BaseLayout titulo={`${numero} ${titulo}`} descripcion={resumen}>
+  <div class="progreso" aria-hidden="true"><span></span></div>
+  <div class="marco">
+    <aside class="toc ui" aria-label="En esta sección">
+      {
+        toc.length > 0 && (
+          <nav>
+            <p class="toc-tit">En esta sección</p>
+            <ol>
+              {toc.map((h) => (
+                <li>
+                  <a href={`#${h.slug}`}>{h.text}</a>
+                </li>
+              ))}
+            </ol>
+          </nav>
+        )
+      }
+    </aside>
+
+    <main id="contenido">
+      <header class="cabecera">
+        <a class="cap ui" href={url('indice')}>Capítulo {capitulo} · {tituloCapitulo}</a>
+        <div class="titular">
+          <span class="num">{numero}</span>
+          <h1>{titulo}</h1>
+        </div>
+        <p class="lead">{resumen}</p>
+        <p class="meta ui">
+          <span>≈ {minutos} min</span>
+          <span aria-hidden="true">·</span>
+          <span>pág. {paginaLibro} del libro (12.ª ed.)</span>
+        </p>
+      </header>
+
+      <article class="prosa">
+        <slot />
+      </article>
+
+      <nav class="paso ui" aria-label="Navegación entre secciones">
+        {
+          anterior ? (
+            <a class="tarjeta-paso" href={url(anterior.slug)}>
+              <span class="dir">← Anterior</span>
+              <span class="t">
+                {anterior.numero} {anterior.titulo}
+              </span>
+            </a>
+          ) : (
+            <a class="tarjeta-paso" href={url('indice')}>
+              <span class="dir">← Índice</span>
+              <span class="t">Contenido del libro</span>
+            </a>
+          )
+        }
+        {
+          siguiente ? (
+            <a class="tarjeta-paso der" href={url(siguiente.slug)}>
+              <span class="dir">Siguiente →</span>
+              <span class="t">
+                {siguiente.numero} {siguiente.titulo}
+              </span>
+            </a>
+          ) : (
+            <a class="tarjeta-paso der" href={url('indice')}>
+              <span class="dir">Índice →</span>
+              <span class="t">Más secciones próximamente</span>
+            </a>
+          )
+        }
+      </nav>
+    </main>
+  </div>
+</BaseLayout>
+
+<script>
+  const barra = document.querySelector<HTMLSpanElement>('.progreso span');
+  const enlaces = [...document.querySelectorAll<HTMLAnchorElement>('.toc a')];
+  const titulos = enlaces
+    .map((a) => document.getElementById(decodeURIComponent(a.hash.slice(1))))
+    .filter((x): x is HTMLElement => x !== null);
+
+  const actualizar = () => {
+    const h = document.documentElement;
+    const p = h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight);
+    if (barra) barra.style.transform = `scaleX(${Math.min(1, Math.max(0, p))})`;
+    let activo = 0;
+    titulos.forEach((t, i) => {
+      if (t.getBoundingClientRect().top < 140) activo = i;
+    });
+    enlaces.forEach((a, i) => a.classList.toggle('activo', i === activo));
+  };
+  document.addEventListener('scroll', actualizar, { passive: true });
+  actualizar();
+</script>
+
+<style>
+  .progreso {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    z-index: 60;
+    pointer-events: none;
+  }
+  .progreso span {
+    display: block;
+    height: 100%;
+    background: linear-gradient(90deg, var(--azul), var(--magenta));
+    transform-origin: left;
+    transform: scaleX(0);
+  }
+  .marco {
+    display: grid;
+    grid-template-columns: 1fr minmax(0, var(--ancho-texto)) 1fr;
+    gap: 2rem;
+    padding: 0 16px;
+  }
+  main {
+    grid-column: 2;
+    min-width: 0;
+  }
+  .toc {
+    grid-column: 1;
+    justify-self: end;
+    position: sticky;
+    top: 6rem;
+    align-self: start;
+    width: 13rem;
+    margin-top: 16rem;
+    font-size: var(--t-sm);
+  }
+  .toc-tit {
+    margin: 0 0 0.6rem;
+    font-size: var(--t-xs);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--tinta-3);
+  }
+  .toc ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-left: 1px solid var(--linea);
+  }
+  .toc a {
+    display: block;
+    padding: 0.3rem 0 0.3rem 0.9rem;
+    margin-left: -1px;
+    border-left: 2px solid transparent;
+    color: var(--tinta-3);
+    text-decoration: none;
+    line-height: 1.35;
+    transition:
+      color var(--dur-1) var(--ease),
+      border-color var(--dur-2) var(--ease);
+  }
+  .toc a:hover {
+    color: var(--tinta);
+  }
+  .toc a:global(.activo) {
+    color: var(--tinta);
+    border-left-color: var(--azul);
+  }
+  @media (max-width: 1180px) {
+    .marco {
+      grid-template-columns: minmax(0, var(--ancho-texto));
+      justify-content: center;
+      gap: 0;
+    }
+    main {
+      grid-column: 1;
+    }
+    .toc {
+      display: none;
+    }
+  }
+  .cabecera {
+    padding: clamp(3rem, 9vw, 6rem) 0 1.5rem;
+  }
+  .cap {
+    display: inline-block;
+    font-size: var(--t-sm);
+    color: var(--tinta-3);
+    text-decoration: none;
+    margin-bottom: 1.2rem;
+  }
+  .cap:hover {
+    color: var(--azul);
+  }
+  .titular {
+    display: flex;
+    align-items: baseline;
+    gap: 0.9rem;
+    flex-wrap: wrap;
+  }
+  .num {
+    font-family: var(--fuente-ui);
+    font-weight: 700;
+    font-size: var(--t-3xl);
+    letter-spacing: -0.04em;
+    color: var(--ocre);
+    line-height: 1;
+  }
+  h1 {
+    margin: 0;
+    font-size: var(--t-3xl);
+    letter-spacing: -0.035em;
+    line-height: 1.02;
+  }
+  .lead {
+    margin: 1.4rem 0 0;
+    font-size: 1.3rem;
+    line-height: 1.55;
+    color: var(--tinta-2);
+  }
+  .meta {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin: 1.2rem 0 0;
+    font-size: var(--t-xs);
+    color: var(--tinta-3);
+  }
+  .prosa :global(h2) {
+    margin: 4.5rem 0 1rem;
+    font-size: var(--t-2xl);
+    letter-spacing: -0.03em;
+  }
+  .prosa :global(h3) {
+    margin: 2.8rem 0 0.6rem;
+    font-size: var(--t-lg);
+  }
+  .prosa :global(p) {
+    margin: 1rem 0;
+  }
+  .prosa :global(ul),
+  .prosa :global(ol) {
+    padding-left: 1.3rem;
+  }
+  .prosa :global(li) {
+    margin: 0.35rem 0;
+  }
+  .prosa :global(blockquote) {
+    margin: 1.5rem 0;
+    padding: 0.2rem 0 0.2rem 1.2rem;
+    border-left: 3px solid var(--ocre);
+    color: var(--tinta-2);
+    font-style: italic;
+  }
+  .prosa :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-family: var(--fuente-ui);
+    font-size: var(--t-sm);
+    font-variant-numeric: tabular-nums;
+  }
+  .prosa :global(th),
+  .prosa :global(td) {
+    padding: 0.5rem 0.6rem;
+    border-bottom: 1px solid var(--linea);
+    text-align: left;
+  }
+  .prosa :global(th) {
+    color: var(--tinta-3);
+    font-weight: 600;
+  }
+  .paso {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 5rem;
+  }
+  .tarjeta-paso {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    padding: 1rem 1.2rem;
+    border-radius: var(--radio-l);
+    border: 1px solid var(--linea);
+    background: var(--fondo-elevado);
+    text-decoration: none;
+    color: var(--tinta);
+    transition:
+      border-color var(--dur-1) var(--ease),
+      transform var(--dur-2) var(--ease-out),
+      box-shadow var(--dur-2) var(--ease-out);
+  }
+  .tarjeta-paso:hover {
+    border-color: var(--azul);
+    transform: translateY(-2px);
+    box-shadow: var(--sombra);
+  }
+  .der {
+    text-align: right;
+  }
+  .dir {
+    font-size: var(--t-xs);
+    color: var(--tinta-3);
+  }
+  .t {
+    font-weight: 600;
+    font-size: var(--t-sm);
+  }
+  @media (max-width: 560px) {
+    .paso {
+      grid-template-columns: 1fr;
+    }
+    .der {
+      text-align: left;
+    }
+  }
+</style>

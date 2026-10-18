@@ -1,0 +1,120 @@
+---
+interface Props {
+  numero: string;
+  titulo: string;
+}
+const { numero, titulo } = Astro.props;
+const pasos = [
+  ['identificar', 'Identificar'],
+  ['plantear', 'Plantear'],
+  ['ejecutar', 'Ejecutar'],
+  ['evaluar', 'Evaluar'],
+] as const;
+const html: Record<string, string> = {};
+for (const [slot] of pasos) {
+  if (Astro.slots.has(slot)) html[slot] = await Astro.slots.render(slot);
+}
+---
+
+<section class="ejemplo aparece" aria-label={`Ejemplo ${numero}: ${titulo}`}>
+  <header class="ui">
+    <span class="sup">Ejemplo {numero}</span>
+    <h4>{titulo}</h4>
+  </header>
+  <div class="enunciado"><slot name="enunciado" /></div>
+  <details class="solucion">
+    <summary class="ui">Ver solución</summary>
+    <div class="pasos">
+      {
+        pasos.map(([slot, etiqueta]) =>
+          html[slot] ? (
+            <div class="paso">
+              <span class="etq ui">{etiqueta}</span>
+              <div set:html={html[slot]} />
+            </div>
+          ) : null,
+        )
+      }
+      <slot />
+    </div>
+  </details>
+</section>
+
+<style>
+  .ejemplo {
+    margin: 2.8rem 0;
+    padding: 1.5rem 1.6rem 0.9rem;
+    border-radius: var(--radio-l);
+    background: var(--caja-ejemplo);
+    border: 1px solid var(--caja-ejemplo-borde);
+  }
+  .sup {
+    font-size: var(--t-xs);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ocre);
+  }
+  h4 {
+    margin: 0.2rem 0 0.4rem;
+    font-size: var(--t-lg);
+  }
+  .solucion {
+    margin-top: 0.6rem;
+    border-top: 1px solid var(--caja-ejemplo-borde);
+    padding-top: 0.5rem;
+  }
+  summary {
+    cursor: pointer;
+    font-size: var(--t-xs);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--tinta-2);
+    list-style: none;
+    padding: 0.35rem 0;
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+  summary::before {
+    content: '';
+    display: inline-block;
+    width: 0;
+    height: 0;
+    margin-right: 0.5rem;
+    border-left: 6px solid currentColor;
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+    transition: transform var(--dur-2) var(--ease-out);
+  }
+  details[open] summary::before {
+    transform: rotate(90deg);
+  }
+  .paso {
+    display: grid;
+    grid-template-columns: 6.2rem 1fr;
+    gap: 0.9rem;
+    margin: 0.4rem 0;
+  }
+  .etq {
+    padding-top: 0.42rem;
+    font-size: var(--t-xs);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ocre);
+  }
+  .paso :global(p:first-child) {
+    margin-top: 0.2rem;
+  }
+  @media (max-width: 600px) {
+    .ejemplo {
+      padding: 1.2rem 1.1rem 0.7rem;
+    }
+    .paso {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+  }
+</style>
