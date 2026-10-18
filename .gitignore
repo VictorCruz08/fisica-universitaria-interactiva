@@ -1,10 +1,16 @@
+# Dependencias y builds
+node_modules/
+.next/
+out/
+next-env.d.ts
+*.tsbuildinfo
+
 # El libro original tiene derechos de autor: nunca se sube
 *.pdf
 .referencia/
 
 # Cachés de herramientas locales
 .impeccable/
-node_modules/
 
 # Entorno
 .env

@@ -15,26 +15,28 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  publicar:
+  construir:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.despliegue.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      # Sin dependencias ni compilación: sólo las pruebas de la parte matemática.
+          cache: npm
+      - run: npm ci
       - run: npm test
-      # Se publica el sitio tal cual, sin los archivos de desarrollo.
-      - name: Preparar el sitio
-        run: |
-          mkdir _sitio
-          cp -r *.html favicon.svg [0-9]* css js vendor _sitio/
-          touch _sitio/.nojekyll
+      - run: npm run check
+      - run: npm run build
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: _sitio
+          path: out
+
+  publicar:
+    needs: construir
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.despliegue.outputs.page_url }}
+    steps:
       - id: despliegue
         uses: actions/deploy-pages@v4

@@ -10,7 +10,7 @@ La meta: la sencillez y elegancia de un producto de Apple con el aire académico
 | Títulos, interfaz, etiquetas | Inter (variable) | `--fuente-ui` / clase `.ui` |
 | Matemáticas | KaTeX (Computer Modern, aspecto LaTeX) | — |
 
-Escala en `css/tokens.css` (`--t-xs` … `--t-3xl`). Títulos con `letter-spacing` negativo; números de sección en ocre y peso 700.
+Escala en `app/estilos/tokens.css` (`--t-xs` … `--t-3xl`). Títulos con `letter-spacing` negativo; números de sección en ocre y peso 700.
 
 ## Color
 
@@ -34,7 +34,7 @@ Cada token tiene variante oscura (en `prefers-color-scheme: dark` y en `[data-th
 ## Superficies
 
 - Figuras: tarjeta blanca (`--fondo-elevado`), borde `--linea`, `--radio-l` (22 px), sombra suave `--sombra`. Más anchas que la columna de texto (`--ancho-figura`).
-- Cajas del libro: `.ejemplo` (crema/ocre), `.cuidado` (rojo muy claro), `.evalua` (azul muy claro), `.estrategia` (crema), `.cm` (gris hundido), `.reflexion` (borde discontinuo).
+- Cajas del libro: `Ejemplo` (crema/ocre), `Cuidado` (rojo muy claro), `Evalua` (azul muy claro), `Estrategia` (crema), `CalculoMental` (gris hundido), `Reflexion` (borde discontinuo).
 - Barra de controles de cada interactivo: `.int-barra`; controles segmentados `.int-segmentado`; deslizadores `.int-deslizador`.
 
 ## Movimiento
@@ -42,11 +42,11 @@ Cada token tiene variante oscura (en `prefers-color-scheme: dark` y en `[data-th
 - Curvas: `--ease-out` (entradas), `easeInOut` (transformaciones de un estado a otro), `--ease-spring` sólo en microinteracciones (manijas).
 - Duraciones: 160 ms (hover), 320 ms (estados), 600–900 ms (explicaciones animadas).
 - Cada animación explica algo: un vector que se invierte, componentes que se apilan, una curva que se traza. Nada de movimiento decorativo dentro del contenido (la portada es la única licencia).
-- `prefers-reduced-motion`: todo salta al estado final (`Tween` y `animar()` de `js/lib/movimiento.js` lo respetan; los tokens `--dur-*` valen 0).
+- `prefers-reduced-motion`: todo salta al estado final (`Tween` y `animar()` de `lib/movimiento.ts` lo respetan; los tokens `--dur-*` valen 0).
 
-## Núcleo de dibujo (`js/nucleo/lienzo.js`)
+## Núcleo de dibujo (`interactivos/nucleo/lienzo.js`)
 
-- `Plano`: mide su ancho real y calcula la escala, así el texto de los SVG no se encoge en móvil. Escala uniforme en x e y (los vectores no se deforman). Para gráficas con ejes de distinta escala, usa un SVG propio (ver `js/interactivos/seno-coseno.js`).
+- `Plano`: mide su ancho real y calcula la escala, así el texto de los SVG no se encoge en móvil. Escala uniforme en x e y (los vectores no se deforman). Para gráficas con ejes de distinta escala, usa un SVG propio (ver `interactivos/seno-coseno.js`).
 - `Escena3D`: cámara ortográfica, z hacia arriba, sistema derecho; se gira arrastrando o con flechas.
 - Funciones de dibujo (`flecha`, `etiqueta`, `poligono`, `arco`, `punto`): reciben el lienzo y coordenadas del mundo y devuelven SVG. `etiqueta` pone TeX dentro de un `foreignObject`; usa `fondo: true` cuando cruce la rejilla.
 - `Manija`: nodo persistente, arrastrable con puntero y con teclado; `paso` = ajuste a la rejilla; `restringir` para mantenerla dentro del lienzo; `pos` puede ser una función para seguir a otro vector.

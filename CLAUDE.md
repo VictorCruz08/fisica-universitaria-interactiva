@@ -14,87 +14,94 @@ El repo es público y el libro tiene copyright de Pearson. Por lo tanto:
 - Sin logos, portada ni marca de Pearson. El sitio dice que no está afiliado.
 - `FisicaUniversitaria.pdf` y `.referencia/` están en `.gitignore`: **nunca** se suben.
 
-## Tecnología: HTML, CSS y JavaScript puros
+## Stack
 
-Sin frameworks, sin compilación y sin dependencias de npm. Cada página es un `.html` que se sirve tal cual.
-
-- **Matemáticas:** KaTeX copiado en `vendor/katex/` (se carga como módulo ES). En el HTML se escribe `$…$` en línea y `$$…$$` en bloque; `js/sitio.js` las renderiza al cargar.
-- **Fuentes:** Inter y Source Serif 4 en `vendor/fuentes/` (archivos locales, `@font-face` en `css/base.css`).
-- **JavaScript:** módulos ES nativos (`<script type="module">`). Animaciones con `requestAnimationFrame` (`js/lib/movimiento.js`); 3D con proyección propia en SVG (`js/lib/proyeccion.js`).
-- **Rutas relativas** en todo el HTML (`../../css/…`): así funciona igual en local y bajo `/fisica-universitaria-interactiva/` en Pages. En JS, los enlaces se construyen con `url()` de `js/sitio.js`, que deduce la raíz de su propia ubicación.
-- **Publicación:** GitHub Actions (`.github/workflows/deploy.yml`) corre las pruebas y sube el sitio a Pages. No hay paso de compilación.
+- **Next.js 16** (App Router, Turbopack) con `output: 'export'`: el sitio se genera como HTML estático en `out/` y se publica en GitHub Pages bajo `basePath: '/fisica-universitaria-interactiva'`. Usa siempre `next/link` (añade el basePath solo); nada de `<a href="/…">` internos.
+- **React 19 + TypeScript** estricto.
+- **MDX** (`@next/mdx`) para el contenido, con `remark-math` + `rehype-katex` (fórmulas renderizadas al compilar) y `rehype-slug` (ids en los títulos). Con Turbopack los plugins se declaran por nombre en `next.config.ts`.
+- **KaTeX** también en el cliente (`lib/katex.ts`) para valores que cambian en vivo.
+- Fuentes con `next/font/google` (Inter y Source Serif 4), expuestas como `--font-ui` y `--font-serif`.
+- Pruebas con **Vitest**. Sin ESLint (Next 16 retiró `next lint`); el control de tipos es `npm run check`.
+- Pensado para crecer hacia funciones de aplicación (cuentas, progreso en la nube): el progreso del estudiante pasa todo por `lib/progreso.ts`. Ojo: `output: 'export'` no admite rutas de API ni middleware; si algún día hacen falta, habrá que publicar en otro sitio (p. ej. Vercel) y quitar `output: 'export'`.
 
 ## Comandos
 
 ```bash
-npm run dev        # servidor local sin dependencias: http://localhost:4321/fisica-universitaria-interactiva/
-npm test           # pruebas de js/lib/vec.js con node:test
+npm install
+npm run dev      # http://localhost:3000/fisica-universitaria-interactiva/
+npm run build    # sitio estático en out/
+npm run check    # tsc --noEmit
+npm test         # vitest
 python -I scripts/extraer_texto.py 11 27   # texto de las págs. 11–27 del libro → .referencia/ (requiere pypdf)
 ```
-
-`npm run dev` sólo ejecuta `node servidor.js`. Los módulos ES necesitan un servidor: abrir el `.html` con doble clic (file://) no funciona.
 
 No hay `pdftoppm` en esta máquina: el PDF se lee con `scripts/extraer_texto.py`. Página impresa + 22 = índice de página del PDF.
 
 ## Mapa del código
 
 ```
-index.html, indice.html, glosario.html, como-usar.html   páginas generales
-1/7/index.html … 1/10/index.html          una sección por carpeta: <capítulo>/<sección>/index.html
-css/tokens.css                             paleta y escala (claro y oscuro)
-css/base.css                               fuentes, tipografía, botones
-css/libro.css                              barra, pie, página de sección y cajas del libro
-css/interactivos.css                       núcleo de dibujo, preguntas y estilos de cada interactivo (.i-…)
-js/sitio.js                                entrada de todas las páginas (ver abajo)
-js/evaluacion.js                           opción múltiple, cálculo mental, reflexión
-js/datos/indice.js                         índice del Vol. 1; una sección se publica al darle `slug: 'cap/sec'`
-js/datos/glosario.js                       términos (tooltips y página de glosario)
-js/nucleo/lienzo.js                        Plano (2D), Escena3D, Manija y funciones de dibujo (flecha, etiqueta, poligono, arco, punto)
-js/interactivos/<nombre>.js                un interactivo por archivo; exporta `default function montar(contenedor)`
-js/lib/                                    vec.js, proyeccion.js, katex.js, movimiento.js (Tween), progreso.js, dom.js
-vendor/                                    KaTeX y fuentes (no editar)
-tests/                                     pruebas con node:test
-servidor.js                                servidor de desarrollo
+app/layout.tsx                        raíz: fuentes, estilos, script de tema, pie, animación de aparición
+app/page.tsx                          portada (sin barra superior)
+app/(libro)/layout.tsx                barra superior para el resto de páginas
+app/(libro)/[capitulo]/[seccion]/     página de cada sección (generateStaticParams desde lib/indice.ts)
+app/(libro)/indice|glosario|como-usar páginas generales
+app/estilos/                          tokens.css (paleta), base.css, libro.css (cajas, layout), interactivos.css
+contenido/1/7.mdx …                   una sección por archivo; exporta `meta` (titulo, resumen, paginaLibro, minutos)
+contenido/registro.ts                 mapa slug → import del MDX
+mdx-components.tsx                    componentes disponibles en todos los MDX sin importarlos
+components/libro/                     Ecuacion, Termino, Figura, Interactivo, Cajas (Cuidado, Estrategia, Ipee, Ejemplo, Enunciado, Solucion, Paso, Evalua, Resumen)
+components/evaluacion/                OpcionMultiple, CalculoMental, Reflexion (cliente)
+components/sitio/                     Barra, BotonTema, Pie, Aparece, GuiaLectura (progreso + índice lateral)
+interactivos/registro.ts              mapa nombre → import dinámico de cada interactivo
+interactivos/<nombre>.js              cada interactivo: `export default function montar(el)` (código imperativo sobre SVG)
+interactivos/nucleo/lienzo.js         Plano (2D), Escena3D, Manija y funciones de dibujo (flecha, etiqueta, poligono, arco, punto)
+lib/                                  vec.ts, proyeccion.ts, katex.ts, movimiento.ts (Tween), progreso.ts, dom.ts, indice.ts, glosario.ts
+tests/                                vitest
 ```
 
-`js/sitio.js` hace todo el trabajo común: inserta barra y pie; convierte `.ecuacion`, `.termino`, `.om`, `.cm`, `.reflexion` y `.evalua`; renderiza KaTeX; en las secciones arma el índice lateral, la barra de progreso y la navegación anterior/siguiente (desde `indice.js`); y carga cada `[data-interactivo="nombre"]` cuando está por entrar en pantalla, importando `js/interactivos/nombre.js`.
+Los interactivos son módulos imperativos (no componentes React) a propósito: dibujan con SVG a 60 fps durante los arrastres y animaciones sin pasar por el ciclo de render de React. `components/libro/Interactivo.tsx` los monta cuando están por entrar en pantalla y los desmonta al salir de la página. Un interactivo nuevo puede ser un módulo así o, si es más de interfaz que de dibujo, un componente React normal.
 
 ## Receta: añadir una sección
 
 1. **Leer** la sección en el libro con `scripts/extraer_texto.py` (texto sólo para consulta). Anota el orden de ideas, las ecuaciones numeradas y qué conceptos previos supone.
 2. **Esquema**: mismo orden y nivel que el libro. Decide qué idea merece un interactivo (ver `docs/pedagogia.md`) y dónde van las preguntas.
-3. **HTML**: copia una sección existente (p. ej. `1/9/index.html`) a `<cap>/<sec>/index.html`, cambia `<title>`, `description`, `data-seccion` del `<body>` y la cabecera, y escribe el contenido dentro de `<article class="prosa">` con estos bloques:
+3. **MDX** en `contenido/<cap>/<sec>.mdx`, empezando por `export const meta = { titulo, resumen, paginaLibro, minutos };` seguido de una línea en blanco. Componentes disponibles (sin importar):
 
-   | Elemento | Marcado |
-   |---|---|
-   | Ecuación numerada | `<div class="ecuacion destacada" data-n="1.6" data-nota="θ desde +x">$$A_x = A\cos\theta$$</div>` |
-   | Término del glosario | `<span class="termino" data-id="vector">cantidad vectorial</span>` |
-   | Figura interactiva | `<figure class="figura ancha aparece"><div class="lienzo" data-interactivo="suma-vectores"></div><figcaption><span class="etq">Interactivo 1.7d</span><span>Qué hacer y qué observar.</span></figcaption></figure>` |
-   | Cuidado | `<aside class="cuidado aparece"><p class="cabeza"><strong>Título</strong></p><p>…</p></aside>` |
-   | Ejemplo | `<section class="ejemplo aparece">` con `header`, `.enunciado` y `<details class="solucion">` con un `.paso` por etapa (Identificar, Plantear, Ejecutar, Evaluar) |
-   | Estrategia | `<section class="estrategia aparece">` con `<span class="ipee">Plantear</span>` en cada paso |
-   | Opción múltiple | `<div class="om" data-id="1.7-x" [data-multiple]><p class="pregunta">…</p><ol class="opciones"><li data-correcta>…<p class="explicacion">…</p></li>…</ol><p class="cierre">…</p></div>` |
-   | Cálculo mental | `<div class="cm" data-id="…"><div class="reto" data-respuesta="10" data-unidad="m"><p class="pregunta">…</p><p class="pista">…</p><p class="truco">…</p></div>…</div>` |
-   | Reflexión | `<div class="reflexion"><p class="pregunta">…</p><p class="pista">…</p><p class="respuesta">…</p></div>` |
-   | Evalúe su comprensión | `<section class="evalua aparece" data-seccion="1.7">` con una o dos `.om` dentro |
-   | Resumen | `<section class="resumen">` con un `<article class="aparece">` por tarjeta |
+   ```mdx
+   <Ecuacion tex="A_x = A\cos\theta" n="1.6" nota="θ desde +x" destacada />
+   <Termino id="vector">cantidad vectorial</Termino>
+   <Figura etiqueta="Interactivo 1.7d" pie="Qué hacer y qué observar." interactivo="suma-vectores" />
+   <Cuidado titulo="…">texto</Cuidado>
+   <Estrategia numero="1.3" titulo="…"><Ipee>Plantear</Ipee> …</Estrategia>
+   <Ejemplo numero="1.7a" titulo="…">
+     <Enunciado>…</Enunciado>
+     <Solucion>
+       <Paso etapa="Identificar">…</Paso>  (Plantear, Ejecutar, Evaluar)
+     </Solucion>
+   </Ejemplo>
+   <OpcionMultiple id="1.7-x" pregunta="…" opciones={[{ texto: '…', correcta: true, explicacion: '…' }]} cierre="…" multiple />
+   <CalculoMental id="…" retos={[{ pregunta: '…', respuesta: 10, unidad: 'm', pista: '…', truco: '…' }]} />
+   <Reflexion pregunta="…" pista="…" respuesta="…" />
+   <Evalua seccion="1.7"> …una o dos OpcionMultiple… </Evalua>
+   <Resumen tarjetas={[{ titulo, texto, formula, n }]} />
+   ```
 
-   Matemáticas: `$…$` en el texto; `$$…$$` en un bloque. En atributos HTML escribe el TeX normal (`$\vec A$`), sin escapar barras.
-4. **Interactivos** en `js/interactivos/<nombre>.js`, construidos con `js/nucleo/lienzo.js`: crea un `Plano` o `Escena3D`, escribe una función `dibujar()` que llame a `plano.pintar([...])` con las funciones de dibujo, regístrala con `plano.alRedibujar(dibujar)` y añade manijas con `plano.manija({...})`. Estilos propios en `css/interactivos.css` con prefijo `.i-<nombre>`.
-5. **Registrar**: `slug` en `js/datos/indice.js` y términos nuevos en `js/datos/glosario.js` (un id desconocido se marca en rojo y sale un error en consola).
-6. **Verificar**: `npm test`, `npm run dev` y revisar la página en el navegador (claro/oscuro, 390 px de ancho, arrastrar cada manija, responder cada pregunta, consola sin errores).
+   Matemáticas: `$…$` en línea y bloques `$$` en líneas propias. Dentro de componentes deja líneas en blanco alrededor del contenido Markdown. En atributos `"…"` el TeX va tal cual (`$\vec A$`); dentro de `{[…]}` son cadenas de JS y las barras se duplican (`'$\\vec A$'`).
+4. **Registrar**: `slug` en `lib/indice.ts`, una línea en `contenido/registro.ts` y los términos nuevos en `lib/glosario.ts` (un id desconocido en `<Termino>` rompe el build, a propósito).
+5. **Interactivos** nuevos en `interactivos/<nombre>.js` y su línea en `interactivos/registro.ts`. Se construyen con `interactivos/nucleo/lienzo.js`: crea un `Plano` o `Escena3D`, escribe `dibujar()` que llame a `plano.pintar([...])`, regístrala con `plano.alRedibujar(dibujar)` y añade manijas con `plano.manija({...})`. Estilos propios en `app/estilos/interactivos.css` con prefijo `.i-<nombre>`.
+6. **Verificar**: `npm test`, `npm run check`, `npm run build` y revisar en el navegador (claro/oscuro, 390 px de ancho, arrastrar cada manija, responder cada pregunta, consola sin errores).
 
 ## Reglas pedagógicas (resumen; detalle en docs/pedagogia.md)
 
 - Respeta el orden, el nivel y la notación del libro (flecha sobre vectores, θ desde +x, IDENTIFICAR · PLANTEAR · EJECUTAR · EVALUAR en los ejemplos).
-- Todo término que un estudiante de primer semestre podría no conocer va en `<span class="termino">` con una definición breve en el glosario.
+- Todo término que un estudiante de primer semestre podría no conocer va en `<Termino>` con una definición breve en el glosario.
 - Ejemplos cotidianos **sólo** cuando encajan de forma natural con el concepto. Si hay que forzarlo, mejor un ejemplo abstracto bien elegido.
 - Cada interactivo explica **una** idea. Su pie de figura dice qué hacer y qué observar.
 - Preguntas con criterio: opción múltiple para conceptos con distractores típicos; cálculo mental para intuición numérica (ternas pitagóricas, ángulos notables); reflexión para ideas abiertas. Cada distractor explica *por qué* está mal.
 
 ## Reglas de diseño (resumen; detalle en docs/diseno.md)
 
-- Usa siempre los tokens de `css/tokens.css` (paleta extraída del libro). Nada de colores sueltos.
+- Usa siempre los tokens de `app/estilos/tokens.css` (paleta extraída del libro). Nada de colores sueltos.
 - Convención fija de vectores: **A azul, B magenta, resultante verde, cuarto vector naranja**; componentes x azul, y magenta, z verde. Ocre = ángulos, números de sección y acentos editoriales; rojo = Cuidado/error.
 - Animaciones estilo Apple: sobrias, 300–900 ms, curvas `easeOut`/`easeInOut`, una idea por movimiento. Respeta `prefers-reduced-motion` (`Tween` y `animar()` ya lo hacen; en CSS usa los tokens `--dur-*`).
 - Matemáticas siempre en KaTeX (también dentro de los SVG, con `etiqueta(lienzo, punto, 'TeX')`).
@@ -104,7 +111,7 @@ servidor.js                                servidor de desarrollo
 
 ## Convenciones de código
 
-- Español en contenido, nombres de archivos, variables y comentarios.
-- JavaScript moderno (módulos ES, sin transpilar), con JSDoc donde ayude.
-- Lógica matemática en `js/lib/vec.js` con pruebas en `tests/vec.test.js`; añade pruebas cuando un interactivo nuevo calcule algo nuevo.
+- Español en contenido, nombres de componentes, variables y comentarios.
+- Componentes de servidor por defecto; `'use client'` sólo donde hay estado o eventos.
+- Lógica matemática en `lib/vec.ts` con pruebas en `tests/vec.test.ts`; añade pruebas cuando un interactivo nuevo calcule algo nuevo.
 - Commits en español, descriptivos.
