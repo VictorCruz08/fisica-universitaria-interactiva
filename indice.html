@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Índice · Física Universitaria Interactiva</title>
+    <meta name="description" content="Contenido completo del Volumen 1: secciones disponibles y próximas." />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <meta name="theme-color" content="#fbfaf7" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#121113" media="(prefers-color-scheme: dark)" />
+    <script>
+      try {
+        const t = localStorage.getItem('fui:tema');
+        if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
+      } catch {}
+    </script>
+    <link rel="stylesheet" href="vendor/katex/katex.min.css" />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/libro.css" />
+    <script type="module" src="js/sitio.js"></script>
+  </head>
+  <body>
+    <main class="pagina">
+      <p class="sobre">Contenido · Volumen 1</p>
+      <h1>Índice</h1>
+      <p class="lead">
+        Sigue el orden del libro de texto. Las secciones con enlace ya están disponibles; las demás irán apareciendo.
+        El número de página corresponde a la 12.ª edición impresa, por si estudias con ella.
+      </p>
+      <div data-generar="indice"></div>
+    </main>
+  </body>
+</html>

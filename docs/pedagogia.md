@@ -6,22 +6,24 @@ Cómo escribir una sección de Física Universitaria Interactiva.
 
 1. **Fiel al libro en estructura, original en forma.** Mismo orden de ideas, mismo nivel matemático, misma notación y numeración de ecuaciones. Pero el texto, los ejemplos, los números y las preguntas se escriben desde cero (ver "Derechos de autor" en `CLAUDE.md`).
 2. **Primero la intuición, luego la fórmula.** Antes de una ecuación, una frase que diga qué significa físicamente y, si ayuda, un interactivo que lo muestre.
-3. **Nada de términos sin explicar.** Si un estudiante de primer semestre podría no conocer una palabra (cuadrante, arctan, proyección, determinante…), va en `<Termino>` y en el glosario. Las definiciones son breves, concretas y originales.
+3. **Nada de términos sin explicar.** Si un estudiante de primer semestre podría no conocer una palabra (cuadrante, arctan, proyección, determinante…), va en `<span class="termino">` y en el glosario. Las definiciones son breves, concretas y originales.
 4. **Explicar el porqué de los errores.** Las cajas `Cuidado` recogen confusiones reales y frecuentes; cada distractor de opción múltiple explica en qué se equivoca.
 5. **Tono:** cercano y preciso, en segunda persona ("arrastra", "observa"). Español neutro. Punto decimal (como el libro).
 
 ## Estructura de una sección
 
 ```
-frontmatter (titulo, resumen = párrafo introductorio, paginaLibro, minutos)
-## Subtemas en el orden del libro
-   texto → <Ecuacion n="…"> → <Figura><Interactivo/></Figura> → <Cuidado> cuando aplique
-   <OpcionMultiple> o <CalculoMental> entre subtemas cuando refuercen algo recién visto
-<Ejemplo> con IDENTIFICAR · PLANTEAR · EJECUTAR · EVALUAR (la solución arranca oculta)
-<Estrategia> si el libro propone una estrategia de resolución en esa sección
-<Evalua seccion="x.y"> al final
-<Reflexion> opcional para cerrar con una pregunta abierta
+cabecera (número, título, párrafo introductorio, minutos, página del libro)
+<h2> Subtemas en el orden del libro
+   texto → .ecuacion → figura con data-interactivo → .cuidado cuando aplique
+   .om o .cm entre subtemas cuando refuercen algo recién visto
+.ejemplo con IDENTIFICAR · PLANTEAR · EJECUTAR · EVALUAR (la solución arranca oculta)
+.estrategia si el libro propone una estrategia de resolución en esa sección
+.evalua al final
+.reflexion opcional para cerrar con una pregunta abierta
 ```
+
+El marcado exacto de cada bloque está en la tabla de `CLAUDE.md` ("Receta: añadir una sección").
 
 ## Interactivos
 
@@ -43,9 +45,9 @@ Un interactivo se justifica si **mover algo** revela una relación que un dibujo
 
 | Tipo | Cuándo | Reglas |
 |---|---|---|
-| `OpcionMultiple` | Conceptos con errores típicos | 3–6 opciones; cada una con `explicacion`; `multiple` si puede haber varias correctas; `cierre` con la idea general. |
-| `CalculoMental` | Desarrollar intuición numérica | 2–4 retos encadenados; `truco` que enseñe el atajo; `pista` opcional. |
-| `Reflexion` | Ideas abiertas, conexiones con capítulos futuros | Pregunta que no se responda con un número; respuesta modelo breve. |
-| `Evalua` | Cierre de cada sección | Envuelve una o dos `OpcionMultiple` propias (no las del libro). |
+| Opción múltiple (`.om`) | Conceptos con errores típicos | 3–6 opciones; cada una con su `.explicacion`; `data-multiple` si puede haber varias correctas; `.cierre` con la idea general. |
+| Cálculo mental (`.cm`) | Desarrollar intuición numérica | 2–4 `.reto` encadenados; `.truco` que enseñe el atajo; `.pista` opcional. |
+| Reflexión (`.reflexion`) | Ideas abiertas, conexiones con capítulos futuros | Pregunta que no se responda con un número; respuesta modelo breve. |
+| Evalúe (`.evalua`) | Cierre de cada sección | Envuelve una o dos `.om` propias (no las del libro). |
 
-Los `id` de las preguntas son estables (`"1.7-evalua"`): se usan para guardar el progreso en el navegador.
+Los `data-id` de las preguntas son estables (`"1.7-evalua"`): se usan para guardar el progreso en el navegador.

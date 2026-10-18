@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cómo usar este libro · Física Universitaria Interactiva</title>
+    <meta name="description" content="Qué significa cada elemento del libro y cómo sacarle provecho." />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <meta name="theme-color" content="#fbfaf7" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#121113" media="(prefers-color-scheme: dark)" />
+    <script>
+      try {
+        const t = localStorage.getItem('fui:tema');
+        if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
+      } catch {}
+    </script>
+    <link rel="stylesheet" href="vendor/katex/katex.min.css" />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/libro.css" />
+    <script type="module" src="js/sitio.js"></script>
+  </head>
+  <body>
+    <main class="pagina">
+      <p class="sobre">Antes de empezar</p>
+      <h1>Cómo usar este libro</h1>
+      <p class="lead">
+        Este sitio sigue capítulo a capítulo un curso de física universitaria. Puedes leerlo solo o junto a tu libro de
+        texto: los números de sección y de ecuación coinciden con los de la 12.ª edición de <em>Física Universitaria</em>
+        (Sears y Zemansky), para que puedas ir y venir entre ambos.
+      </p>
+
+      <section class="bloques">
+        <article class="aparece">
+          <div class="muestra interactivo">Interactivo 1.7d</div>
+          <h2 class="ui">Figuras interactivas</h2>
+          <p>
+            Casi todas las figuras se pueden manipular. Los círculos con borde de color son manijas: arrástralas con el
+            ratón o el dedo, o selecciónalas con <kbd>Tab</kbd> y muévelas con las flechas del teclado. Las escenas en 3D
+            se giran arrastrando.
+          </p>
+        </article>
+        <article class="aparece">
+          <div class="muestra ejemplo-m">Ejemplo 1.8b</div>
+          <h2 class="ui">Ejemplos resueltos</h2>
+          <p>
+            Siguen siempre cuatro pasos: <strong>Identificar</strong> los conceptos y la incógnita,
+            <strong>Plantear</strong> el problema con un dibujo, <strong>Ejecutar</strong> los cálculos y
+            <strong>Evaluar</strong> si el resultado tiene sentido. La solución está oculta: inténtalo primero.
+          </p>
+        </article>
+        <article class="aparece">
+          <div class="muestra cuidado-m">Cuidado</div>
+          <h2 class="ui">Errores comunes</h2>
+          <p>Las cajas rojas señalan las confusiones más frecuentes. Léelas aunque creas que no te aplican.</p>
+        </article>
+        <article class="aparece">
+          <div class="muestra evalua-m">Evalúe su comprensión</div>
+          <h2 class="ui">Preguntas de opción múltiple</h2>
+          <p>
+            Al final de cada sección (y a veces en medio). Cada respuesta incorrecta explica <em>por qué</em> lo es, así que
+            equivocarse también enseña. Tu progreso se guarda sólo en tu navegador.
+          </p>
+        </article>
+        <article class="aparece">
+          <div class="muestra mental-m">Cálculo mental</div>
+          <h2 class="ui">Sin calculadora</h2>
+          <p>Retos cortos para desarrollar intuición numérica: ternas pitagóricas, ángulos notables, órdenes de magnitud.</p>
+        </article>
+        <article class="aparece">
+          <div class="muestra reflexion-m">Para reflexionar</div>
+          <h2 class="ui">Preguntas abiertas</h2>
+          <p>No tienen una sola respuesta correcta. Escribe tu idea antes de ver una respuesta modelo.</p>
+        </article>
+        <article class="aparece">
+          <div class="muestra termino-m">magnitud</div>
+          <h2 class="ui">Términos con definición</h2>
+          <p>
+            Las palabras subrayadas con puntos ocres muestran su definición al pasar el cursor o al tocarlas. Todas están
+            reunidas en el <a href="glosario.html">glosario</a>.
+          </p>
+        </article>
+      </section>
+
+      <section class="aviso aparece">
+        <h2 class="ui">Sobre el contenido</h2>
+        <p>
+          Éstas son notas de estudio independientes: el texto, los ejemplos, las preguntas y las figuras son originales.
+          Siguen el orden, la notación y el enfoque pedagógico del libro de Sears, Zemansky, Young y Freedman, pero no lo
+          reproducen ni lo sustituyen. Este proyecto no está afiliado a Pearson.
+        </p>
+      </section>
+    </main>
+  </body>
+</html>

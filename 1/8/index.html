@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>1.8 Componentes de vectores · Física Universitaria Interactiva</title>
+    <meta name="description" content="Dibujar flechas sirve para entender, pero no para calcular con precisión. El método de componentes convierte cada vector en un par (o trío) de números con los que la suma de vectores se vuelve aritmética." />
+    <link rel="icon" type="image/svg+xml" href="../../favicon.svg" />
+    <meta name="theme-color" content="#fbfaf7" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#121113" media="(prefers-color-scheme: dark)" />
+    <script>
+      try {
+        const t = localStorage.getItem('fui:tema');
+        if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
+      } catch {}
+    </script>
+    <link rel="stylesheet" href="../../vendor/katex/katex.min.css" />
+    <link rel="stylesheet" href="../../css/base.css" />
+    <link rel="stylesheet" href="../../css/libro.css" />
+    <link rel="stylesheet" href="../../css/interactivos.css" />
+    <script type="module" src="../../js/sitio.js"></script>
+  </head>
+  <body data-seccion="1/8">
+    <div class="marco">
+      <main id="contenido">
+        <header class="cabecera">
+          <a class="cap ui" href="../../indice.html">Capítulo 1</a>
+          <div class="titular"><span class="num">1.8</span><h1>Componentes de vectores</h1></div>
+          <p class="lead">Dibujar flechas sirve para entender, pero no para calcular con precisión. El método de componentes convierte cada vector en un par (o trío) de números con los que la suma de vectores se vuelve aritmética.</p>
+          <p class="meta ui"><span>≈ 40 min</span><span aria-hidden="true">·</span><span>pág. 15 del libro (12.ª ed.)</span></p>
+        </header>
+
+        <article class="prosa">
+<h2>¿Por qué necesitamos otro método?</h2>
+<p>En la sección anterior sumamos vectores dibujándolos. Funciona, pero tiene dos límites: medir sobre un dibujo nunca es muy exacto, y los atajos con triángulos rectángulos sólo sirven cuando los vectores son perpendiculares. Necesitamos un método que sea <strong>general</strong> (sirva para cualquier ángulo) y <strong>preciso</strong> (no dependa de la regla y el transportador). Ese método es el de <strong>componentes</strong>.</p>
+<h2>Vectores componentes y componentes</h2>
+<p>Partimos de un <span class="termino" data-id="cartesiano">sistema cartesiano</span>: dos ejes perpendiculares, $x$ y $y$, que se cruzan en el <span class="termino" data-id="origen">origen</span> $O$. Dibujamos el vector $\vec A$ con su cola en $O$.</p>
+<p>La idea clave es que <strong>cualquier vector del plano se puede escribir como la suma de un vector paralelo al eje $x$ y otro paralelo al eje $y$</strong>. Llamamos a esos dos vectores los <span class="termino" data-id="vectores-componentes">vectores componentes</span> de $\vec A$, y su suma, por construcción, reconstruye $\vec A$:</p>
+<div class="ecuacion" data-n="1.5">$$\vec A = \vec A_x + \vec A_y$$</div>
+<p>Como cada vector componente está “atado” a un eje, basta <strong>un solo número</strong> para describirlo: cuánto mide y si apunta hacia el lado positivo o negativo del eje. Ese número es la <span class="termino" data-id="componentes">componente</span>:</p>
+<ul>
+  <li>$A_x$ es la magnitud de $\vec A_x$ con signo <strong>+</strong> si apunta hacia $+x$, y con signo <strong>−</strong> si apunta hacia $-x$.</li>
+  <li>$A_y$ se define igual con respecto al eje $y$.</li>
+</ul>
+<aside class="cuidado aparece">
+  <p class="cabeza"><strong>Las componentes no son vectores</strong></p>
+<p>$A_x$ y $A_y$ son <strong>números</strong> (con unidades), no flechas. Por eso se escriben sin flecha encima. Los vectores componentes $\vec A_x$ y $\vec A_y$ sí son vectores. Confundir unos con otros es uno de los errores más comunes al empezar.</p>
+</aside>
+<h3>Componentes a partir de la magnitud y el ángulo</h3>
+<p>Describimos la dirección de $\vec A$ con el ángulo $\theta$ que forma con el <strong>eje $+x$</strong>, medido girando <strong>hacia el eje $+y$</strong> (en sentido antihorario). Con esa convención, $+y$ está a $90^\circ$, $-x$ a $180^\circ$ y $-y$ a $270^\circ$ (o, lo que es lo mismo, a $-90^\circ$).</p>
+<p>El vector y sus dos componentes forman un triángulo rectángulo, así que basta la definición de <span class="termino" data-id="seno">seno y coseno</span>:</p>
+<div class="ecuacion destacada" data-n="1.6" data-nota="θ medido desde +x hacia +y">$$A_x = A\cos\theta \qquad A_y = A\sin\theta$$</div>
+<p>Lo bonito es que <strong>los signos salen solos</strong>. En el segundo <span class="termino" data-id="cuadrante">cuadrante</span> el coseno es negativo, así que $A_x &lt; 0$; en el tercero, seno y coseno son negativos, y ambas componentes también. Compruébalo:</p>
+<figure class="figura ancha aparece">
+  <div class="lienzo" data-interactivo="componentes"></div>
+  <figcaption><span class="etq">Interactivo 1.8a</span><span>Arrastra la punta de A por los cuatro cuadrantes. Las flechas tenues son los vectores componentes; los números, las componentes. La tabla resalta el cuadrante en el que estás.</span></figcaption>
+</figure>
+<aside class="cuidado aparece">
+  <p class="cabeza"><strong>La ecuación (1.6) exige un ángulo medido desde +x</strong></p>
+<p>Si el ángulo de un problema se mide desde otra referencia (por ejemplo, “20° a la izquierda de la vertical”), <strong>no</strong> lo metas directamente en $A\cos\theta$ y $A\sin\theta$. Tienes dos opciones: convertirlo primero a un ángulo medido desde $+x$, o razonar con el triángulo rectángulo qué cateto es el opuesto y cuál el adyacente, y poner los signos a mano mirando el dibujo.</p>
+</aside>
+<section class="ejemplo aparece" aria-label="Ejemplo 1.8a: Componentes con ángulos «incómodos»">
+  <header><span class="sup">Ejemplo 1.8a</span><h4>Componentes con ángulos «incómodos»</h4></header>
+  <div class="enunciado">
+<p>a) El vector $\vec D$ mide 6.0 m y apunta $30^\circ$ por <strong>debajo</strong> del eje $+x$. b) El vector $\vec E$ mide 10.0 m y forma $20^\circ$ con el eje $+y$, inclinado hacia el lado de $-x$. Obtén las componentes de cada uno.</p>
+  </div>
+  <details class="solucion">
+    <summary>Ver solución</summary>
+    <div class="pasos">
+      <div class="paso"><span class="etq">Identificar</span><div>
+<p>Conocemos magnitud y dirección; buscamos componentes. La trampa es que ningún ángulo está dado "desde $+x$ hacia $+y$".</p>
+      </div></div>
+      <div class="paso"><span class="etq">Plantear</span><div>
+<p>a) Girar $30^\circ$ hacia abajo es girar en sentido horario: $\theta = -30^\circ$. b) El eje $+y$ está a $90^\circ$; inclinarse $20^\circ$ más hacia $-x$ da $\theta = 90^\circ + 20^\circ = 110^\circ$.</p>
+      </div></div>
+      <div class="paso"><span class="etq">Ejecutar</span><div>
+<div class="bloque-math">$$
+D_x = (6.0\ \text{m})\cos(-30^\circ) = +5.2\ \text{m}, \qquad D_y = (6.0\ \text{m})\sin(-30^\circ) = -3.0\ \text{m}
+$$</div>
+<div class="bloque-math">$$
+E_x = (10.0\ \text{m})\cos 110^\circ = -3.42\ \text{m}, \qquad E_y = (10.0\ \text{m})\sin 110^\circ = +9.40\ \text{m}
+$$</div>
+      </div></div>
+      <div class="paso"><span class="etq">Evaluar</span><div>
+<p>Los signos coinciden con el dibujo: $\vec D$ apunta a la derecha y hacia abajo (cuadrante IV); $\vec E$, a la izquierda y hacia arriba (cuadrante II). Además, $\vec E$ está casi vertical, así que su componente $y$ debe ser mucho mayor que la $x$: así es. Con el triángulo también llegamos ahí: el cateto opuesto a los $20^\circ$ es el horizontal, $|E_x| = E\sin 20^\circ$.</p>
+      </div></div>
+    </div>
+  </details>
+</section>
+<p>Los ejes no tienen por qué ser horizontal y vertical; sólo necesitan ser perpendiculares entre sí. En el capítulo 5, por ejemplo, convendrá inclinar los ejes para que uno quede a lo largo de una rampa. El vector no cambia, pero sus componentes sí, porque dependen de los ejes que elijas:</p>
+<figure class="figura ancha aparece">
+  <div class="lienzo" data-interactivo="ejes-inclinados"></div>
+  <figcaption><span class="etq">Interactivo 1.8b</span><span>El peso w de la caja siempre apunta hacia abajo. Al inclinar la rampa, los ejes x′ e y′ giran con ella y las componentes del peso cambian… pero su magnitud combinada sigue siendo w.</span></figcaption>
+</figure>
+<h2>Calcular con componentes</h2>
+<h3>1. Magnitud y dirección a partir de las componentes</h3>
+<p>También podemos ir en sentido contrario. Por el <span class="termino" data-id="pitagoras">teorema de Pitágoras</span>, la magnitud es</p>
+<div class="ecuacion" data-n="1.7" data-nota="siempre la raíz positiva">$$A = \sqrt{A_x^2 + A_y^2}$$</div>
+<p>y la dirección se obtiene de la <span class="termino" data-id="tangente">tangente</span>:</p>
+<div class="ecuacion" data-n="1.8">$$\tan\theta = \frac{A_y}{A_x} \qquad \theta = \arctan\frac{A_y}{A_x}$$</div>
+<p>Aquí <span class="termino" data-id="arctan">arctan</span> es la tangente inversa; en tu calculadora aparece como $\tan^{-1}$ (verifica que esté en grados, no en <span class="termino" data-id="radian">radianes</span>).</p>
+<aside class="cuidado aparece">
+  <p class="cabeza"><strong>La calculadora no sabe en qué cuadrante está tu vector</strong></p>
+<p>Dos ángulos que difieren en $180^\circ$ tienen la misma tangente. Por ejemplo, $A_x = -3$, $A_y = 3$ y $A_x = 3$, $A_y = -3$ dan ambos $\tan\theta = -1$, pero apuntan en direcciones opuestas. La calculadora siempre responde con un ángulo entre $-90^\circ$ y $+90^\circ$, así que <strong>si $A_x$ es negativa, debes sumar $180^\circ$</strong>. La regla de oro: haz siempre un dibujo y mira en qué cuadrante cae el vector.</p>
+</aside>
+<figure class="figura ancha aparece">
+  <div class="lienzo" data-interactivo="ambiguedad-arctan"></div>
+  <figcaption><span class="etq">Interactivo 1.8c</span><span>Mueve el vector a los cuadrantes II y III y compara la flecha punteada (lo que da arctan) con la real.</span></figcaption>
+</figure>
+<h3>2. Multiplicar un vector por un escalar</h3>
+<p>Si $\vec D = c\vec A$, cada componente de $\vec D$ es simplemente $c$ veces la componente correspondiente de $\vec A$:</p>
+<div class="ecuacion" data-n="1.9" data-nota="componentes de D = cA">$$D_x = cA_x \qquad D_y = cA_y$$</div>
+<p>Esto concuerda con lo que vimos en 1.7: con $c = 2$, las componentes se duplican y la flecha mide el doble en la misma dirección; con $c = -3$, cambian de signo (dirección opuesta) y se triplican.</p>
+<h3>3. Sumar vectores por componentes</h3>
+<p>Ésta es la gran ventaja del método. Si $\vec R = \vec A + \vec B$, la componente $x$ de la resultante es la suma de las componentes $x$, y lo mismo con $y$:</p>
+<div class="ecuacion destacada" data-n="1.10" data-nota="componentes de R = A + B">$$R_x = A_x + B_x \qquad R_y = A_y + B_y$$</div>
+<figure class="figura ancha aparece">
+  <div class="lienzo" data-interactivo="suma-componentes"></div>
+  <figcaption><span class="etq">Interactivo 1.8d</span><span>Acomoda A y B y pulsa el botón. Los vectores se descomponen; luego todas las componentes x se apilan sobre el eje x y todas las y sobre el eje y. Lo que se forma en cada eje es la componente de la resultante.</span></figcaption>
+</figure>
+<p>Nada cambia si hay más vectores: se suman todas las componentes $x$ por un lado y todas las $y$ por otro.</p>
+<div class="ecuacion" data-n="1.11">$$R_x = A_x + B_x + C_x + \cdots \qquad R_y = A_y + B_y + C_y + \cdots$$</div>
+<p>Con $R_x$ y $R_y$ en la mano, las ecuaciones (1.7) y (1.8) —cambiando $A$ por $R$— nos dan la magnitud y la dirección de la resultante.</p>
+<section class="estrategia aparece">
+  <header><span class="sup">Estrategia para resolver problemas 1.3</span><h4>Suma de vectores por componentes</h4></header>
+<p><span class="ipee">Identificar</span> ¿Qué te piden: la magnitud de la resultante, su dirección o ambas?</p>
+<p><span class="ipee">Plantear</span> Dibuja los vectores cabeza con cola y elige los ejes. Traza la resultante y haz una <strong>estimación a ojo</strong> de su tamaño y dirección; te servirá para detectar errores.</p>
+<p><span class="ipee">Ejecutar</span></p>
+<ol>
+  <li>Calcula las componentes de cada vector con $A_x = A\cos\theta$, $A_y = A\sin\theta$ (con $\theta$ desde $+x$; si el ángulo viene dado de otra forma, conviértelo primero). Anótalas en una tabla.</li>
+  <li>Suma, <strong>con su signo</strong>, todas las componentes $x$ para obtener $R_x$; haz lo mismo con las $y$.</li>
+  <li>Calcula $R = \sqrt{R_x^2 + R_y^2}$ y $\theta = \arctan(R_y/R_x)$, corrigiendo $180^\circ$ si el dibujo lo pide.</li>
+</ol>
+<p><span class="ipee">Evaluar</span> Compara con tu estimación. Si no se parecen, revisa signos, el cuadrante del ángulo y que la calculadora esté en grados.</p>
+</section>
+<section class="ejemplo aparece" aria-label="Ejemplo 1.8b: Una carrera de orientación">
+  <header><span class="sup">Ejemplo 1.8b</span><h4>Una carrera de orientación</h4></header>
+  <div class="enunciado">
+<p>En una carrera de orientación, la tarjeta de pistas indica tres tramos: 120 m a $30^\circ$ al norte del este; luego 80 m al norte; luego 150 m a $40^\circ$ al sur del oeste. ¿A qué distancia y en qué dirección está la meta respecto de la salida? Quien lo calcula antes de correr camina un solo tramo recto.</p>
+  </div>
+  <details class="solucion">
+    <summary>Ver solución</summary>
+    <div class="pasos">
+      <div class="paso"><span class="etq">Identificar</span><div>
+<p>Buscamos la resultante $\vec R = \vec A + \vec B + \vec C$ de tres desplazamientos: magnitud y dirección.</p>
+      </div></div>
+      <div class="paso"><span class="etq">Plantear</span><div>
+<p>Tomamos $+x$ = este y $+y$ = norte. Los ángulos desde $+x$ hacia $+y$ son $30^\circ$, $90^\circ$ y $180^\circ + 40^\circ = 220^\circ$. Un dibujo rápido sugiere una resultante corta, de unos 40–50 m, apuntando hacia el norte y un poco al oeste.</p>
+      </div></div>
+      <div class="paso"><span class="etq">Ejecutar</span><div>
+<div class="tabla-desplazable"><table>
+<thead><tr><th>Tramo</th><th>Magnitud</th><th>$\theta$</th><th>Componente $x$</th><th>Componente $y$</th></tr></thead>
+<tbody>
+<tr><td>$\vec A$</td><td>120 m</td><td>$30^\circ$</td><td>$+103.92$ m</td><td>$+60.00$ m</td></tr>
+<tr><td>$\vec B$</td><td>80 m</td><td>$90^\circ$</td><td>$0.00$ m</td><td>$+80.00$ m</td></tr>
+<tr><td>$\vec C$</td><td>150 m</td><td>$220^\circ$</td><td>$-114.91$ m</td><td>$-96.42$ m</td></tr>
+<tr><td><strong>Suma</strong></td><td></td><td></td><td>$R_x = -10.99$ m</td><td>$R_y = +43.58$ m</td></tr>
+</tbody></table></div>
+<div class="bloque-math">$$
+R = \sqrt{(-10.99\ \text{m})^2 + (43.58\ \text{m})^2} = 44.9\ \text{m}
+$$</div>
+<div class="bloque-math">$$
+\arctan\frac{43.58}{-10.99} = -75.8^\circ \;\Rightarrow\; \theta = -75.8^\circ + 180^\circ = 104.2^\circ
+$$</div>
+<p>Como $R_x &lt; 0$ y $R_y &gt; 0$, el vector está en el cuadrante II: sumamos $180^\circ$. La meta está a 44.9 m, $14.2^\circ$ al oeste del norte. (Conservamos dígitos de más en la tabla y redondeamos sólo al final.)</p>
+      </div></div>
+      <div class="paso"><span class="etq">Evaluar</span><div>
+<p>Coincide con la estimación: unos 45 m, casi al norte, un poco al oeste. Si hubiéramos aceptado el $-75.8^\circ$ de la calculadora, habríamos mandado al corredor hacia el sureste: justo al revés.</p>
+      </div></div>
+    </div>
+  </details>
+</section>
+<div class="cm" data-id="1.8-mental">
+  <div class="reto" data-respuesta="5" data-unidad="m">
+    <p class="pregunta">Un vector de 10 m forma $30^\circ$ con el eje $+x$. ¿Cuánto vale su componente $y$?</p>
+    <p class="pista">$\sin 30^\circ$ es una fracción muy sencilla.</p>
+    <p class="truco">$\sin 30^\circ = \tfrac12$, así que $A_y = 10 \cdot \tfrac12 = 5$ m. Vale la pena memorizar $\sin 30^\circ = \cos 60^\circ = 0.5$.</p>
+  </div>
+  <div class="reto" data-respuesta="4" data-unidad="N">
+    <p class="pregunta">Un vector de 8 N forma $60^\circ$ con el eje $+x$. ¿Cuánto vale $A_x$?</p>
+    <p class="truco">$\cos 60^\circ = \tfrac12$: $A_x = 4$ N.</p>
+  </div>
+  <div class="reto" data-respuesta="10" data-unidad="m">
+    <p class="pregunta">Si $A_x = -6$ m y $A_y = 8$ m, ¿cuánto mide $\vec A$?</p>
+    <p class="pista">El signo desaparece al elevar al cuadrado. ¿Reconoces la terna?</p>
+    <p class="truco">$(-6)^2 + 8^2 = 36 + 64 = 100$, y $\sqrt{100} = 10$ m (terna 3-4-5 por 2).</p>
+  </div>
+  <div class="reto" data-respuesta="7" data-unidad="m">
+    <p class="pregunta">Un vector forma $45^\circ$ con $+x$ y su componente $x$ vale 7 m. ¿Cuánto vale su componente $y$?</p>
+    <p class="truco">A $45^\circ$ seno y coseno son iguales, así que $A_y = A_x$.</p>
+  </div>
+</div>
+<h2>Vectores en tres dimensiones</h2>
+<p>Todo lo anterior funciona igual en el espacio. Añadimos un eje $z$ perpendicular al plano $xy$ y cada vector tiene tres componentes, $A_x$, $A_y$ y $A_z$. Geométricamente, $\vec A$ es la diagonal de una caja cuyas aristas miden $|A_x|$, $|A_y|$ y $|A_z|$, y su magnitud es</p>
+<div class="ecuacion" data-n="1.12">$$A = \sqrt{A_x^2 + A_y^2 + A_z^2}$$</div>
+<figure class="figura ancha aparece">
+  <div class="lienzo" data-interactivo="caja-diagonal-3d"></div>
+  <figcaption><span class="etq">Interactivo 1.8e</span><span>Cambia las aristas de la caja y gira la escena arrastrándola. Prueba 2, 3, 6: la diagonal sale exacta.</span></figcaption>
+</figure>
+<p>La suma de vectores simplemente gana un renglón más: $R_z = A_z + B_z + C_z + \cdots$</p>
+<p>Por último: aunque aquí trabajamos con desplazamientos, <strong>todo esto vale para cualquier cantidad vectorial</strong>. En el capítulo 4 veremos que las fuerzas se suman exactamente con estas reglas.</p>
+<section class="ejemplo aparece" aria-label="Ejemplo 1.8c: Un vuelo en tres dimensiones">
+  <header><span class="sup">Ejemplo 1.8c</span><h4>Un vuelo en tres dimensiones</h4></header>
+  <div class="enunciado">
+<p>Un dron despega de una azotea y se desplaza 12 m al este, 9 m al sur y sube 8 m. ¿A qué distancia en línea recta queda del punto de despegue?</p>
+  </div>
+  <details class="solucion">
+    <summary>Ver solución</summary>
+    <div class="pasos">
+      <div class="paso"><span class="etq">Ejecutar</span><div>
+<p>Con $+x$ = este, $+y$ = norte y $+z$ = arriba: $A_x = 12$ m, $A_y = -9$ m, $A_z = 8$ m.</p>
+<div class="bloque-math">$$
+A = \sqrt{(12\ \text{m})^2 + (-9\ \text{m})^2 + (8\ \text{m})^2} = \sqrt{289}\ \text{m} = 17\ \text{m}
+$$</div>
+      </div></div>
+      <div class="paso"><span class="etq">Evaluar</span><div>
+<p>El resultado es mayor que cualquiera de los tres tramos y menor que su suma (29 m), como debe ser para una diagonal.</p>
+      </div></div>
+    </div>
+  </details>
+</section>
+<section class="evalua aparece" data-seccion="1.8">
+<div class="om" data-id="1.8-evalua">
+  <p class="pregunta">Un vector tiene componentes $A_x = 3$ y $A_y = -4$. ¿Cuál es su dirección, medida desde $+x$ hacia $+y$?</p>
+  <ol class="opciones">
+    <li>$53.1^\circ$<p class="explicacion">Ese ángulo está en el cuadrante I, donde ambas componentes son positivas. Aquí $A_y$ es negativa.</p></li>
+    <li data-correcta>$-53.1^\circ$ (es decir, $306.9^\circ$)<p class="explicacion">Correcto: $A_x &gt; 0$ y $A_y &lt; 0$ ponen al vector en el cuadrante IV, y en este caso la calculadora acierta.</p></li>
+    <li>$126.9^\circ$<p class="explicacion">Ése sería el ángulo de $(-3, 4)$, en el cuadrante II: el vector opuesto.</p></li>
+    <li>$233.1^\circ$<p class="explicacion">Cuadrante III: ahí ambas componentes serían negativas.</p></li>
+  </ol>
+  <p class="cierre">Truco: antes de usar arctan, decide el cuadrante sólo con los signos de las componentes.</p>
+</div>
+</section>
+<div class="reflexion">
+  <p class="pregunta">En el interactivo de la rampa, al girar los ejes cambiaron las componentes del peso pero no su magnitud. ¿Qué es entonces lo «real» de un vector: sus componentes o la flecha? ¿Por qué podemos elegir los ejes como más nos convenga?</p>
+  <p class="pista">Piensa en qué depende de tu elección y qué no depende de nada.</p>
+  <p class="respuesta">La flecha (magnitud y dirección) es la cantidad física; no depende de quién la mire. Las componentes son su <strong>descripción</strong> en unos ejes concretos: cambian si cambias los ejes, pero siempre reconstruyen la misma flecha y la misma magnitud $\sqrt{A_x^2 + A_y^2}$. Por eso elegimos los ejes que simplifiquen el problema: un eje sobre la rampa deja casi todas las componentes en cero o en expresiones sencillas.</p>
+</div>
+        </article>
+      </main>
+    </div>
+  </body>
+</html>

@@ -16,17 +16,14 @@ El libro crece sección por sección.
 
 ## Desarrollo
 
-Requiere Node 20+.
+Es un sitio estático hecho con **HTML, CSS y JavaScript puros**: sin frameworks, sin compilación y sin dependencias. Sólo necesitas Node 20+ para el servidor local y las pruebas.
 
 ```bash
-npm install
 npm run dev      # http://localhost:4321/fisica-universitaria-interactiva/
-npm run test     # pruebas de la biblioteca vectorial
-npm run check    # revisión de tipos
-npm run build    # sitio estático en dist/
+npm test         # pruebas de la biblioteca vectorial (node:test)
 ```
 
-Construido con [Astro](https://astro.build), [Svelte](https://svelte.dev) y [KaTeX](https://katex.org). Cada push a `main` se publica en GitHub Pages. La guía para contribuir contenido está en [`CLAUDE.md`](CLAUDE.md), [`docs/pedagogia.md`](docs/pedagogia.md) y [`docs/diseno.md`](docs/diseno.md).
+Las fórmulas se renderizan con [KaTeX](https://katex.org) (incluido en `vendor/`). Cada push a `main` se publica en GitHub Pages. La guía para contribuir contenido está en [`CLAUDE.md`](CLAUDE.md), [`docs/pedagogia.md`](docs/pedagogia.md) y [`docs/diseno.md`](docs/diseno.md).
 
 ## Aviso
 

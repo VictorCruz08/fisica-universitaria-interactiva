@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Física Universitaria Interactiva</title>
+    <meta name="description" content="Libro interactivo de física universitaria: vectores, movimiento y más, con animaciones y ejercicios." />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <meta name="theme-color" content="#fbfaf7" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#121113" media="(prefers-color-scheme: dark)" />
+    <script>
+      try {
+        const t = localStorage.getItem('fui:tema');
+        if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
+      } catch {}
+    </script>
+    <link rel="stylesheet" href="vendor/katex/katex.min.css" />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/libro.css" />
+    <script type="module" src="js/sitio.js"></script>
+  </head>
+  <body data-sin-barra>
+    <header class="portada">
+      <svg class="campo" viewBox="0 0 1000 560" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <g data-generar="campo"></g>
+      </svg>
+
+      <div class="contenido">
+        <p class="sobre">Volumen 1 · Mecánica, ondas y termodinámica</p>
+        <h1>
+          <span class="l1">Física</span>
+          <span class="l2">Universitaria</span>
+          <span class="l3">Interactiva</span>
+        </h1>
+
+        <svg class="suma" viewBox="0 0 360 150" role="img" aria-label="Dos vectores sumados cabeza con cola y su resultante">
+          <line class="v a" x1="20" y1="130" x2="200" y2="40" pathLength="1" />
+          <path class="p a" d="M210 35 L194.5 37 L201.4 50.4 Z" />
+          <line class="v b" x1="200" y1="40" x2="330" y2="96" pathLength="1" />
+          <path class="p b" d="M340 100 L327.5 88.7 L321.9 101.6 Z" />
+          <line class="v r" x1="20" y1="130" x2="330" y2="103" pathLength="1" />
+          <path class="p r" d="M341 102 L327.9 96.6 L329 110.6 Z" />
+          <text class="t a" x="96" y="72">A</text>
+          <text class="t b" x="276" y="56">B</text>
+          <text class="t r" x="170" y="140">A + B</text>
+        </svg>
+
+        <p class="lema">
+          Un libro de física para quienes entienden mejor <em>viendo</em>: cada concepto con animaciones precisas,
+          figuras que puedes mover y preguntas para comprobar lo aprendido.
+        </p>
+        <div class="acciones">
+          <a class="boton-grande" data-comenzar href="1/7/">Comenzar</a>
+          <a class="enlace" href="indice.html">Ver índice completo →</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="debajo">
+      <section class="principios">
+        <article class="aparece">
+          <h2 class="ui">Visual</h2>
+          <p>Cada idea importante tiene una animación que la muestra paso a paso. Nada de adorno: cada movimiento explica algo.</p>
+        </article>
+        <article class="aparece">
+          <h2 class="ui">Interactivo</h2>
+          <p>Arrastra vectores, mueve deslizadores, gira escenas en 3D. Aprendes preguntándole al modelo “¿y si…?”.</p>
+        </article>
+        <article class="aparece">
+          <h2 class="ui">Riguroso</h2>
+          <p>Sigue el orden, el nivel y la notación de un curso universitario, con la estrategia Identificar · Plantear · Ejecutar · Evaluar.</p>
+        </article>
+      </section>
+
+      <section class="disponibles">
+        <h2 class="ui">Disponible ahora</h2>
+        <ol data-generar="disponibles"></ol>
+        <p class="nota">El libro crece sección por sección. <a href="como-usar.html">Cómo usar este libro</a>.</p>
+      </section>
+    </main>
+  </body>
+</html>
