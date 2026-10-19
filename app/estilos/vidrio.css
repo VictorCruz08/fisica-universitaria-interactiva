@@ -1,0 +1,152 @@
+/*
+ * Superficies de vidrio (glassmorphism) y fondo ambiental.
+ *
+ * El vidrio sólo se lee como tal si hay algo detrás que difuminar: por eso el
+ * <body> lleva un fondo fijo con manchas suaves de la paleta del libro. Las
+ * tarjetas son translúcidas, con desenfoque, un filo claro y una luz interior
+ * arriba, como el material de las interfaces de Apple.
+ */
+
+:root {
+  --vidrio: rgba(255, 255, 255, 0.56);
+  --vidrio-fuerte: rgba(255, 255, 255, 0.74);
+  --vidrio-tenue: rgba(255, 255, 255, 0.38);
+  --vidrio-borde: rgba(255, 255, 255, 0.75);
+  --vidrio-filo: rgba(35, 30, 33, 0.09);
+  --vidrio-luz: inset 0 1px 0 rgba(255, 255, 255, 0.85);
+  --vidrio-sombra: 0 1px 2px rgba(35, 30, 33, 0.04), 0 12px 32px rgba(35, 30, 33, 0.07);
+  --vidrio-desenfoque: blur(22px) saturate(170%);
+  --ambiente-a: rgba(0, 130, 201, 0.16);
+  --ambiente-b: rgba(204, 51, 178, 0.11);
+  --ambiente-c: rgba(45, 153, 114, 0.12);
+  --ambiente-d: rgba(175, 124, 40, 0.1);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --vidrio: rgba(34, 33, 38, 0.55);
+    --vidrio-fuerte: rgba(38, 37, 42, 0.76);
+    --vidrio-tenue: rgba(34, 33, 38, 0.35);
+    --vidrio-borde: rgba(255, 255, 255, 0.09);
+    --vidrio-filo: rgba(0, 0, 0, 0.4);
+    --vidrio-luz: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    --vidrio-sombra: 0 1px 2px rgba(0, 0, 0, 0.35), 0 16px 40px rgba(0, 0, 0, 0.35);
+    --ambiente-a: rgba(58, 168, 232, 0.13);
+    --ambiente-b: rgba(224, 92, 200, 0.09);
+    --ambiente-c: rgba(63, 193, 146, 0.08);
+    --ambiente-d: rgba(214, 162, 76, 0.07);
+  }
+}
+
+:root[data-theme='dark'] {
+  --vidrio: rgba(34, 33, 38, 0.55);
+  --vidrio-fuerte: rgba(38, 37, 42, 0.76);
+  --vidrio-tenue: rgba(34, 33, 38, 0.35);
+  --vidrio-borde: rgba(255, 255, 255, 0.09);
+  --vidrio-filo: rgba(0, 0, 0, 0.4);
+  --vidrio-luz: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  --vidrio-sombra: 0 1px 2px rgba(0, 0, 0, 0.35), 0 16px 40px rgba(0, 0, 0, 0.35);
+  --ambiente-a: rgba(58, 168, 232, 0.13);
+  --ambiente-b: rgba(224, 92, 200, 0.09);
+  --ambiente-c: rgba(63, 193, 146, 0.08);
+  --ambiente-d: rgba(214, 162, 76, 0.07);
+}
+
+/* ——— Fondo ambiental fijo ——— */
+body::before {
+  content: '';
+  position: fixed;
+  inset: -10vmax;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(40vmax 34vmax at 12% 14%, var(--ambiente-a), transparent 70%),
+    radial-gradient(34vmax 30vmax at 90% 8%, var(--ambiente-b), transparent 70%),
+    radial-gradient(38vmax 34vmax at 82% 78%, var(--ambiente-c), transparent 70%),
+    radial-gradient(32vmax 28vmax at 8% 88%, var(--ambiente-d), transparent 70%);
+}
+
+/* ——— Material de vidrio ——— */
+.vidrio,
+.figura > .lienzo,
+.ejemplo,
+.cuidado,
+.evalua,
+.estrategia,
+.cm,
+.reflexion,
+.resumen article,
+.ecuacion.destacada,
+.tarjeta-paso,
+.tarjeta-capitulo,
+.tarjeta-seccion,
+.tarjeta-parte {
+  background: var(--vidrio);
+  border: 1px solid var(--vidrio-borde);
+  box-shadow: var(--vidrio-luz), 0 0 0 0.5px var(--vidrio-filo), var(--vidrio-sombra);
+  -webkit-backdrop-filter: var(--vidrio-desenfoque);
+  backdrop-filter: var(--vidrio-desenfoque);
+}
+
+/* Vidrio teñido: conserva el color de cada caja del libro. */
+.ejemplo,
+.estrategia {
+  background: linear-gradient(color-mix(in srgb, var(--ocre) 9%, transparent), color-mix(in srgb, var(--ocre) 9%, transparent)),
+    var(--vidrio);
+}
+.cuidado {
+  background: linear-gradient(color-mix(in srgb, var(--rojo) 9%, transparent), color-mix(in srgb, var(--rojo) 9%, transparent)),
+    var(--vidrio);
+}
+.evalua {
+  background: linear-gradient(color-mix(in srgb, var(--azul) 8%, transparent), color-mix(in srgb, var(--azul) 8%, transparent)),
+    var(--vidrio);
+}
+.cm {
+  background: linear-gradient(color-mix(in srgb, var(--verde) 6%, transparent), color-mix(in srgb, var(--verde) 6%, transparent)),
+    var(--vidrio);
+}
+.reflexion {
+  background: var(--vidrio-tenue);
+  border-style: dashed;
+  border-color: color-mix(in srgb, var(--magenta) 35%, var(--vidrio-borde));
+}
+
+/* Controles sobre vidrio: más opacos para que el texto se lea siempre. */
+.om .opcion,
+.cm input,
+.reflexion textarea,
+.boton {
+  background: var(--vidrio-fuerte);
+}
+.int-barra {
+  background: color-mix(in srgb, var(--fondo-hundido) 35%, transparent);
+}
+.int-segmentado {
+  background: color-mix(in srgb, var(--fondo-hundido) 70%, transparent);
+}
+.int-segmentado button[aria-pressed='true'] {
+  background: var(--vidrio-fuerte);
+}
+
+/* Sin desenfoque cuando el sistema pide reducir transparencias. */
+@media (prefers-reduced-transparency: reduce) {
+  .vidrio,
+  .figura > .lienzo,
+  .ejemplo,
+  .cuidado,
+  .evalua,
+  .estrategia,
+  .cm,
+  .reflexion,
+  .resumen article,
+  .ecuacion.destacada,
+  .tarjeta-paso,
+  .tarjeta-capitulo,
+  .tarjeta-seccion,
+  .tarjeta-parte {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background: var(--fondo-elevado);
+  }
+}

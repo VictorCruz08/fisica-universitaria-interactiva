@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import GuiaLectura from '@/components/sitio/GuiaLectura';
+import Migas from '@/components/sitio/Migas';
 import { secciones } from '@/contenido/registro';
 import { seccionesPublicadas, type SeccionPublicada } from '@/lib/indice';
 
@@ -57,9 +58,13 @@ export default async function PaginaSeccion({ params }: { params: Promise<Params
       <GuiaLectura />
       <main id="contenido">
         <header className="cabecera">
-          <Link className="cap ui" href="/indice/">
-            Capítulo {actual.capitulo} · {actual.tituloCapitulo}
-          </Link>
+          <Migas
+            pasos={[
+              { texto: 'Índice', href: '/indice/' },
+              { texto: `Capítulo ${actual.capitulo}`, href: `/${actual.capitulo}/` },
+              { texto: actual.numero },
+            ]}
+          />
           <div className="titular">
             <span className="num">{actual.numero}</span>
             <h1>{meta.titulo}</h1>

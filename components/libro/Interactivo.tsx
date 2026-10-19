@@ -31,7 +31,7 @@ export default function Interactivo({ nombre }: { nombre: NombreInteractivo }) {
             if (vivo) setError(true);
           });
       },
-      { rootMargin: '300px 0px' },
+      { rootMargin: '600px 0px 1500px 0px' },
     );
     observador.observe(el);
     return () => {

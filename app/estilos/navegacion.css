@@ -1,0 +1,337 @@
+/*
+ * Jerarquía de navegación: portada → índice (partes y capítulos) → capítulo
+ * (sus secciones) → sección. Todo sobre la misma retícula y con tarjetas de vidrio.
+ */
+
+/* ——— Migas de pan ——— */
+.migas ol {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.55rem;
+  margin: 0 0 1.4rem;
+  padding: 0;
+  list-style: none;
+  font-size: var(--t-sm);
+  color: var(--tinta-3);
+}
+.migas a {
+  color: var(--tinta-2);
+  text-decoration: none;
+}
+.migas a:hover {
+  color: var(--azul);
+}
+.migas .sep {
+  color: var(--tinta-3);
+  opacity: 0.6;
+}
+.migas [aria-current='page'] {
+  color: var(--tinta);
+  font-weight: 550;
+}
+
+/* ——— Páginas generales ——— */
+.pagina-ancha {
+  max-width: var(--ancho-figura);
+}
+.cabeza-pagina {
+  max-width: var(--ancho-texto);
+}
+.estado {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1.6rem;
+  font-family: var(--fuente-ui);
+  font-size: var(--t-xs);
+  color: var(--tinta-3);
+}
+.estado .barra-p {
+  flex: 1;
+  max-width: 16rem;
+  height: 6px;
+  border-radius: 3px;
+  background: color-mix(in srgb, var(--tinta) 8%, transparent);
+  overflow: hidden;
+}
+.estado .barra-p span {
+  display: block;
+  height: 100%;
+  min-width: 6px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--azul), var(--verde));
+}
+.pastilla {
+  display: inline-block;
+  white-space: nowrap;
+  font-family: var(--fuente-ui);
+  font-size: var(--t-xs);
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--verde) 14%, transparent);
+  color: var(--verde);
+}
+
+/* ——— Índice: partes y tarjetas de capítulo ——— */
+.parte {
+  margin-top: 4.5rem;
+}
+.parte h2 {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin: 0 0 1.4rem;
+  font-size: var(--t-xl);
+}
+.parte-num {
+  font-size: var(--t-xs);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ocre);
+}
+.rejilla-capitulos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 16.5rem), 1fr));
+  gap: 1.1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.rejilla-capitulos > li {
+  display: flex;
+}
+.tarjeta-capitulo {
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+  gap: 0.45rem;
+  width: 100%;
+  padding: 1.4rem 1.5rem 1.3rem;
+  border-radius: var(--radio-l);
+  color: var(--tinta);
+  text-decoration: none;
+  transition:
+    transform var(--dur-2) var(--ease-out),
+    box-shadow var(--dur-2) var(--ease-out);
+}
+.tarjeta-capitulo:hover {
+  transform: translateY(-3px);
+}
+.tc-num {
+  font-family: var(--fuente-ui);
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: var(--tinta-3);
+}
+.con-contenido .tc-num {
+  color: var(--azul);
+}
+.tc-titulo {
+  font-family: var(--fuente-ui);
+  font-size: 1.08rem;
+  font-weight: 650;
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+}
+.tc-desc {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--tinta-2);
+}
+.tc-pie,
+.tp-pie {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 0.6rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--linea);
+  font-family: var(--fuente-ui);
+  font-size: var(--t-xs);
+}
+
+/* ——— Página de capítulo ——— */
+.pagina-capitulo {
+  max-width: var(--ancho-texto);
+}
+.portadilla {
+  position: relative;
+  padding: 0.5rem 0 1rem;
+}
+.numero-capitulo {
+  position: absolute;
+  top: -1.5rem;
+  right: 0;
+  font-family: var(--fuente-ui);
+  font-size: clamp(6rem, 18vw, 11rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.06em;
+  color: color-mix(in srgb, var(--azul) 12%, transparent);
+  pointer-events: none;
+  user-select: none;
+}
+/* En pantallas estrechas el número de fondo chocaría con el título: se oculta. */
+@media (max-width: 700px) {
+  .numero-capitulo {
+    display: none;
+  }
+}
+.portadilla .sobre {
+  margin: 0;
+  font-family: var(--fuente-ui);
+  font-size: var(--t-sm);
+  font-weight: 650;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ocre);
+}
+.portadilla h1 {
+  position: relative;
+  margin: 0.5rem 0 0;
+  max-width: 36rem;
+  font-size: clamp(2.3rem, 5.5vw, 3.6rem);
+  letter-spacing: -0.04em;
+  line-height: 1.02;
+}
+.portadilla .lead {
+  position: relative;
+  max-width: 34rem;
+  margin: 1.2rem 0 0;
+  font-size: 1.2rem;
+  color: var(--tinta-2);
+}
+.portadilla .acciones {
+  margin-top: 2rem;
+}
+.lista-secciones {
+  display: grid;
+  gap: 0.7rem;
+  margin: 3rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+.tarjeta-seccion {
+  display: grid;
+  grid-template-columns: 3.4rem 1fr auto;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 1.05rem 1.4rem;
+  border-radius: var(--radio);
+  color: var(--tinta-3);
+  text-decoration: none;
+}
+.tarjeta-seccion:not(.disponible) {
+  background: var(--vidrio-tenue);
+  box-shadow: none;
+  border-color: transparent;
+}
+.tarjeta-seccion.disponible {
+  color: var(--tinta);
+  transition:
+    transform var(--dur-2) var(--ease-out),
+    border-color var(--dur-1) var(--ease);
+}
+.tarjeta-seccion.disponible:hover {
+  transform: translateX(4px);
+}
+.tarjeta-seccion .sn {
+  font-family: var(--fuente-ui);
+  font-size: var(--t-sm);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.tarjeta-seccion.disponible .sn {
+  color: var(--ocre);
+}
+.tarjeta-seccion .st {
+  font-size: 1.08rem;
+  line-height: 1.4;
+}
+.tarjeta-seccion .opc {
+  margin-left: 0.5rem;
+  font-family: var(--fuente-ui);
+  font-size: var(--t-xs);
+  font-style: italic;
+  color: var(--tinta-3);
+}
+.tarjeta-seccion .sp {
+  font-family: var(--fuente-ui);
+  font-size: var(--t-xs);
+  white-space: nowrap;
+}
+.tarjeta-seccion.disponible .sp {
+  color: var(--azul);
+  font-weight: 600;
+}
+@media (max-width: 560px) {
+  .tarjeta-seccion {
+    grid-template-columns: 2.8rem 1fr;
+    padding: 1rem 1.15rem;
+  }
+  .tarjeta-seccion .sp {
+    grid-column: 2;
+  }
+}
+
+/* ——— Portada: partes del libro ——— */
+.titulo-bloque {
+  margin: 0 0 1.4rem;
+  font-size: var(--t-xl);
+}
+.principios article {
+  padding: 1.6rem 1.7rem;
+  border-radius: var(--radio-l);
+}
+.partes {
+  margin-top: 5rem;
+}
+.partes ul {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+  gap: 1.1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.partes li {
+  display: flex;
+}
+.tarjeta-parte {
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+  gap: 0.55rem;
+  width: 100%;
+  padding: 1.6rem 1.7rem 1.4rem;
+  border-radius: var(--radio-l);
+  color: var(--tinta);
+  text-decoration: none;
+  transition: transform var(--dur-2) var(--ease-out);
+}
+.tarjeta-parte:hover {
+  transform: translateY(-3px);
+}
+.tp-sup {
+  font-family: var(--fuente-ui);
+  font-size: var(--t-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ocre);
+}
+.tp-titulo {
+  font-family: var(--fuente-ui);
+  font-size: var(--t-xl);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+.tp-temas {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--tinta-2);
+}

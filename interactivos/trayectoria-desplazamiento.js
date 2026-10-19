@@ -67,11 +67,12 @@ export default function montar(raiz) {
   raiz.append(el);
 
   const plano = new Plano(el.querySelector('.int-lienzo'), {
-    x: [-0.7, 4.9],
-    y: [-0.7, 3.7],
+    // Margen de media cuadra alrededor del barrio: nada toca el borde de la tarjeta.
+    x: [-1.35, 5.35],
+    y: [-1.35, 4.35],
     rejilla: false,
     ejes: false,
-    altoMax: 380,
+    altoMax: 400,
     titulo: 'Mapa de un barrio: ruta por las calles de casa a la panadería',
   });
 
@@ -82,7 +83,7 @@ export default function montar(raiz) {
   function dibujar() {
     const p = posicion(s);
     const desp = magnitud(p);
-    plano.pintarFondo(MANZANAS.map((m) => poligono(plano, m, { relleno: 'var(--fondo-hundido)' })));
+    plano.pintarFondo(MANZANAS.map((m) => poligono(plano, m, { relleno: 'color-mix(in srgb, var(--tinta) 6%, transparent)' })));
     plano.pintar([
       poligono(plano, IDA, { cerrado: false, borde: 'var(--linea-fuerte)', grosor: 5 }),
       poligono(plano, recorrido(s), { cerrado: false, borde: 'var(--ocre)', grosor: 5 }),

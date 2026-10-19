@@ -1,8 +1,5 @@
 import Link from 'next/link';
-import { seccionesPublicadas } from '@/lib/indice';
-
-const publicadas = seccionesPublicadas();
-const primera = publicadas[0];
+import { indice } from '@/lib/indice';
 
 // Fondo: rejilla de flechitas orientadas como un campo vectorial.
 const flechas = Array.from({ length: 13 * 7 }, (_, n) => {
@@ -11,6 +8,20 @@ const flechas = Array.from({ length: 13 * 7 }, (_, n) => {
   const x = 40 + i * 76;
   const y = 40 + j * 76;
   return { x, y, ang: (Math.atan2(y - 300, x - 520) * 180) / Math.PI + 90, retraso: (i + j) * 60 };
+});
+
+const partes = indice.map((p, k) => {
+  const caps = p.capitulos;
+  const secciones = caps.flatMap((c) => c.secciones);
+  return {
+    numero: k + 1,
+    titulo: p.titulo,
+    rango: `Capítulos ${caps[0].numero}–${caps.at(-1)!.numero}`,
+    capitulos: caps.length,
+    disponibles: secciones.filter((s) => s.slug).length,
+    total: secciones.length,
+    temas: caps.slice(0, 4).map((c) => c.titulo),
+  };
 });
 
 export default function Portada() {
@@ -53,13 +64,11 @@ export default function Portada() {
             figuras que puedes mover y preguntas para comprobar lo aprendido.
           </p>
           <div className="acciones">
-            {primera && (
-              <Link className="boton-grande" href={`/${primera.slug}/`}>
-                Comenzar: {primera.numero} {primera.titulo}
-              </Link>
-            )}
-            <Link className="enlace" href="/indice/">
-              Ver índice completo →
+            <Link className="boton-grande" href="/indice/">
+              Explorar el libro
+            </Link>
+            <Link className="enlace" href="/como-usar/">
+              Cómo usar este libro →
             </Link>
           </div>
         </div>
@@ -67,36 +76,43 @@ export default function Portada() {
 
       <main className="debajo">
         <section className="principios">
-          <article className="aparece">
+          <article className="vidrio aparece">
             <h2 className="ui">Visual</h2>
             <p>Cada idea importante tiene una animación que la muestra paso a paso. Nada de adorno: cada movimiento explica algo.</p>
           </article>
-          <article className="aparece">
+          <article className="vidrio aparece">
             <h2 className="ui">Interactivo</h2>
             <p>Arrastra vectores, mueve deslizadores, gira escenas en 3D. Aprendes preguntándole al modelo “¿y si…?”.</p>
           </article>
-          <article className="aparece">
+          <article className="vidrio aparece">
             <h2 className="ui">Riguroso</h2>
             <p>Sigue el orden, el nivel y la notación de un curso universitario, con la estrategia Identificar · Plantear · Ejecutar · Evaluar.</p>
           </article>
         </section>
 
-        <section className="disponibles">
-          <h2 className="ui">Disponible ahora</h2>
-          <ol>
-            {publicadas.map((s) => (
-              <li className="aparece" key={s.slug}>
-                <Link href={`/${s.slug}/`}>
-                  <span className="n">{s.numero}</span>
-                  <span className="tt">{s.titulo}</span>
-                  <span className="cap">Cap. {s.capitulo}</span>
+        <section className="partes">
+          <h2 className="ui titulo-bloque">El libro</h2>
+          <ul>
+            {partes.map((p) => (
+              <li key={p.numero}>
+                <Link className="tarjeta-parte aparece" href={`/indice/#parte-${p.numero}`}>
+                  <span className="tp-sup">
+                    Parte {p.numero} · {p.rango}
+                  </span>
+                  <span className="tp-titulo">{p.titulo}</span>
+                  <span className="tp-temas">{p.temas.join(' · ')}{p.capitulos > 4 ? ' · …' : ''}</span>
+                  <span className="tp-pie">
+                    {p.disponibles > 0 ? (
+                      <span className="pastilla">{p.disponibles} secciones disponibles</span>
+                    ) : (
+                      <span className="tenue">Próximamente</span>
+                    )}
+                    <span className="tenue">{p.capitulos} capítulos</span>
+                  </span>
                 </Link>
               </li>
             ))}
-          </ol>
-          <p className="nota">
-            El libro crece sección por sección. <Link href="/como-usar/">Cómo usar este libro</Link>.
-          </p>
+          </ul>
         </section>
       </main>
     </>

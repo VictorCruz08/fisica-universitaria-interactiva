@@ -7,6 +7,8 @@ import './estilos/tokens.css';
 import './estilos/base.css';
 import './estilos/libro.css';
 import './estilos/interactivos.css';
+import './estilos/vidrio.css';
+import './estilos/navegacion.css';
 
 const ui = Inter({ subsets: ['latin', 'latin-ext'], variable: '--font-ui', display: 'swap' });
 const serif = Source_Serif_4({

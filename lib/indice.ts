@@ -316,6 +316,37 @@ export const indice: ParteIndice[] = [
   },
 ];
 
+/** Una frase original por capítulo para las tarjetas del índice y la portada del capítulo. */
+export const descripcionCapitulo: Record<number, string> = {
+  1: 'El lenguaje de la física: unidades, precisión, estimaciones y los vectores con los que describiremos todo lo demás.',
+  2: 'Posición, velocidad y aceleración cuando el movimiento ocurre sobre una sola recta.',
+  3: 'Los mismos conceptos en el plano y el espacio: tiros parabólicos, giros y movimientos vistos desde distintos observadores.',
+  4: 'Qué es una fuerza y las tres leyes que relacionan las fuerzas con el movimiento.',
+  5: 'Cómo usar las leyes de Newton en situaciones reales: equilibrio, fricción y movimiento circular.',
+  6: 'Una nueva forma de mirar el movimiento: el trabajo que hacen las fuerzas y la energía del movimiento.',
+  7: 'La energía que se guarda por la posición o la deformación, y cuándo la energía total se conserva.',
+  8: 'Choques, empujones breves y cohetes: la cantidad de movimiento y su conservación.',
+  9: 'Objetos que giran: ángulos, velocidades angulares y la energía de la rotación.',
+  10: 'Por qué las cosas empiezan a girar y cómo se conserva el momento angular.',
+  11: 'Cuándo un cuerpo no se mueve ni gira, y cómo se deforman los materiales bajo esfuerzo.',
+  12: 'La atracción entre masas, del peso de una manzana a las órbitas de los planetas.',
+  13: 'Resortes, péndulos y todo lo que se repite: el movimiento armónico simple.',
+  14: 'Líquidos y gases en reposo y en movimiento: presión, flotación y flujo.',
+  15: 'Perturbaciones que viajan: descripción de las ondas, su energía y su superposición.',
+  16: 'El sonido como onda: rapidez, intensidad, resonancia y el efecto Doppler.',
+  17: 'Temperatura, dilatación y las formas en que el calor pasa de un cuerpo a otro.',
+  18: 'Del comportamiento de un gas a la imagen de las moléculas que lo forman.',
+  19: 'Energía interna, calor y trabajo: la conservación de la energía en sistemas térmicos.',
+  20: 'Por qué los procesos tienen una dirección: máquinas térmicas, refrigeradores y entropía.',
+};
+
+/** Busca un capítulo por número. */
+export const capitulo = (n: number): CapituloIndice | undefined =>
+  indice.flatMap((p) => p.capitulos).find((c) => c.numero === n);
+
+/** Todos los capítulos, en orden. */
+export const capitulos = (): CapituloIndice[] => indice.flatMap((p) => p.capitulos);
+
 /** Secciones publicadas, en orden de lectura. */
 export const seccionesPublicadas = (): SeccionPublicada[] =>
   indice.flatMap((p) =>

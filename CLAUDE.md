@@ -41,17 +41,20 @@ No hay `pdftoppm` en esta máquina: el PDF se lee con `scripts/extraer_texto.py`
 
 ```
 app/layout.tsx                        raíz: fuentes, estilos, script de tema, pie, animación de aparición
-app/page.tsx                          portada (sin barra superior)
+app/page.tsx                          portada general (sin barra superior): partes del libro
+app/(libro)/indice/                   índice: partes → tarjetas de capítulo
+app/(libro)/[capitulo]/               portada de cada capítulo con la lista de sus secciones
 app/(libro)/layout.tsx                barra superior para el resto de páginas
 app/(libro)/[capitulo]/[seccion]/     página de cada sección (generateStaticParams desde lib/indice.ts)
-app/(libro)/indice|glosario|como-usar páginas generales
-app/estilos/                          tokens.css (paleta), base.css, libro.css (cajas, layout), interactivos.css
+app/(libro)/glosario|como-usar        páginas generales
+app/estilos/                          tokens.css (paleta), base.css, libro.css (cajas, layout), interactivos.css,
+                                      vidrio.css (glassmorphism + fondo ambiental), navegacion.css (migas, índice, capítulos)
 contenido/1/7.mdx …                   una sección por archivo; exporta `meta` (titulo, resumen, paginaLibro, minutos)
 contenido/registro.ts                 mapa slug → import del MDX
 mdx-components.tsx                    componentes disponibles en todos los MDX sin importarlos
 components/libro/                     Ecuacion, Termino, Figura, Interactivo, Cajas (Cuidado, Estrategia, Ipee, Ejemplo, Enunciado, Solucion, Paso, Evalua, Resumen)
 components/evaluacion/                OpcionMultiple, CalculoMental, Reflexion (cliente)
-components/sitio/                     Barra, BotonTema, Pie, Aparece, GuiaLectura (progreso + índice lateral)
+components/sitio/                     Barra, BotonTema, Pie, Aparece, GuiaLectura (progreso + índice lateral), Migas
 interactivos/registro.ts              mapa nombre → import dinámico de cada interactivo
 interactivos/<nombre>.js              cada interactivo: `export default function montar(el)` (código imperativo sobre SVG)
 interactivos/nucleo/lienzo.js         Plano (2D), Escena3D, Manija y funciones de dibujo (flecha, etiqueta, poligono, arco, punto)
@@ -102,6 +105,11 @@ Los interactivos son módulos imperativos (no componentes React) a propósito: d
 ## Reglas de diseño (resumen; detalle en docs/diseno.md)
 
 - Usa siempre los tokens de `app/estilos/tokens.css` (paleta extraída del libro). Nada de colores sueltos.
+- Jerarquía de navegación: portada → índice → capítulo → sección, con migas (`<Migas>`) en cada nivel.
+- Tarjetas de vidrio (`app/estilos/vidrio.css`): fondo translúcido, desenfoque, filo claro y luz interior sobre el fondo ambiental del `<body>`. Para una tarjeta nueva añade su clase a la lista de `vidrio.css` o usa `.vidrio`. Respeta `prefers-reduced-transparency`.
+- Retícula única: en las secciones, texto, figuras, ejemplos y cajas comparten el ancho de la columna (`--ancho-texto`); el índice lateral vive en su propia columna y nunca se superpone. Nada de márgenes negativos para "sacar" figuras de la columna.
+- Respiración: dentro de las tarjetas, 1.5 rem de padding lateral en escritorio y ~1.1 rem en móvil; ningún texto ni dibujo toca el borde.
+- Las definiciones del glosario (`<Termino>`) se pintan en un portal sobre `<body>`: el `backdrop-filter` del vidrio crea un bloque contenedor y recortaría un `position: fixed` dentro de la tarjeta.
 - Convención fija de vectores: **A azul, B magenta, resultante verde, cuarto vector naranja**; componentes x azul, y magenta, z verde. Ocre = ángulos, números de sección y acentos editoriales; rojo = Cuidado/error.
 - Animaciones estilo Apple: sobrias, 300–900 ms, curvas `easeOut`/`easeInOut`, una idea por movimiento. Respeta `prefers-reduced-motion` (`Tween` y `animar()` ya lo hacen; en CSS usa los tokens `--dur-*`).
 - Matemáticas siempre en KaTeX (también dentro de los SVG, con `etiqueta(lienzo, punto, 'TeX')`).
